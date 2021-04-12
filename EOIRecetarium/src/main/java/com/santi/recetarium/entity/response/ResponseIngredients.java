@@ -3,22 +3,21 @@ package com.santi.recetarium.entity.response;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.santi.recetarium.entity.dto.IngredientDTOCard;
+import com.santi.recetarium.entity.Ingredient;
 
 public class ResponseIngredients {
 
-	private List<IngredientDTOCard> ingredients = new ArrayList<IngredientDTOCard>();
+	private List<Ingredient> ingredients = new ArrayList<Ingredient>();
 	
-	public ResponseIngredients(List<IngredientDTOCard> ingredients) {
+	public ResponseIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
 
-	public List<IngredientDTOCard> getIngredients() {
+	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(List<IngredientDTOCard> ingredients) {
+	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
-	
 }
