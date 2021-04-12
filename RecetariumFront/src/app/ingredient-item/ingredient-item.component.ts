@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Ingredient } from '../interfaces/ingredient';
 import { IngredientService } from '../services/ingredient.service';
 
@@ -10,10 +10,17 @@ import { IngredientService } from '../services/ingredient.service';
 export class IngredientItemComponent implements OnInit {
 
   @Input() ingredient!: Ingredient;
+  @Output() delete = new EventEmitter<void>();
 
   constructor(private ingredientService: IngredientService) { }
 
   ngOnInit(): void {
+  }
+
+  deleteIngredient() {
+    this.ingredientService.deleteIngredient(this.ingredient.id_ingredient as number).subscribe(
+      () => this.delete.emit()
+    );
   }
 
 }

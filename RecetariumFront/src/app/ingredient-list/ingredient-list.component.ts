@@ -27,4 +27,12 @@ export class IngredientListComponent implements OnInit {
     );
   }
 
+  addIngredient(ingredient: Ingredient): void {
+    this.ingredients = [...this.ingredients, ingredient];
+  }
+
+  deleteIngredient(ingredient: Ingredient): void {
+    this.ingredients = this.ingredients.filter(p => p !== ingredient);
+  }
+
 }
