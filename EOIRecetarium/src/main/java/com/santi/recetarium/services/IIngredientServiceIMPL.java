@@ -3,10 +3,12 @@ package com.santi.recetarium.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.santi.recetarium.entity.Ingredient;
 import com.santi.recetarium.entity.dao.IIngredientDAO;
 
+@Service
 public class IIngredientServiceIMPL implements IIngredientService {
 
 	@Autowired

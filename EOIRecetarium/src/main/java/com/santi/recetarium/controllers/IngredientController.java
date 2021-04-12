@@ -28,7 +28,7 @@ import com.santi.recetarium.services.IIngredientServiceIMPL;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/ingredient")
+@RequestMapping("/ingredients")
 public class IngredientController {
 
 	@Autowired
@@ -46,7 +46,7 @@ public class IngredientController {
 		return new ResponseEntity<ResponseIngredients>(response, HttpStatus.OK);
 	}
 	
-	@GetMapping("/ingredient/{id}")
+	@GetMapping("/ingredients/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id){
 
 		Ingredient ingredient = null;
