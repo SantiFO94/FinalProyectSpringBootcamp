@@ -1,20 +1,21 @@
 package com.santi.recetarium.entity.response;
 
-import com.santi.recetarium.entity.dto.IngredientDTOCard;
+import com.santi.recetarium.entity.Ingredient;
 
+//usar para acceder rápidamente a las cantidades de un ingrediente dentro de una receta
 public class ResponseIngredient {
 
-	private IngredientDTOCard ingredient;
+	private Ingredient ingredient;
 	
-	public ResponseIngredient(IngredientDTOCard ingredient) {
+	public ResponseIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
 	}
 
-	public IngredientDTOCard getIngredient() {
+	public Ingredient getIngredient() {
 		return ingredient;
 	}
 
-	public void setIngredient(IngredientDTOCard ingredient) {
+	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
 	}
 	
