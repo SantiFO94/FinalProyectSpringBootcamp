@@ -1,0 +1,9 @@
+CREATE DATABASE recetarium
+
+CREATE TABLE ingredients (
+    id_ingredient bigserial NOT NULL,
+    name varchar(255) NOT NULL,
+    quantity float NOT NULL,
+	measure varchar(255) NOT NULL,
+	PRIMARY KEY (id_ingredient)
+);
