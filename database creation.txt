@@ -17,7 +17,6 @@ CREATE TABLE public.recipes(
     time_required character varying COLLATE pg_catalog."default",
     description character varying COLLATE pg_catalog."default",
     instructions character varying COLLATE pg_catalog."default" NOT NULL,
-    ingredients bigint NOT NULL,
     CONSTRAINT recipes_pkey PRIMARY KEY (id_recipe),
     CONSTRAINT ingredients_id_fkey FOREIGN KEY (id_recipe)
         REFERENCES public.ingredients (id_ingredient) MATCH SIMPLE
