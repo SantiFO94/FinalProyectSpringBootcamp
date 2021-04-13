@@ -8,14 +8,19 @@ import { HomeComponent } from './home/home.component';
 import { IngredientItemComponent } from './ingredient-item/ingredient-item.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+<<<<<<< HEAD
 import { BaseUrlInterceptor } from './interceptors/base-url.interceptor';
+=======
+import { IngredientFormComponent } from './ingredient-form/ingredient-form.component';
+>>>>>>> 9a8394e200dbc6d7e2234dba5fbd81cad39a4e79
 
 @NgModule({
   declarations: [
     AppComponent,
     IngredientListComponent,
     HomeComponent,
-    IngredientItemComponent
+    IngredientItemComponent,
+    IngredientFormComponent
   ],
   imports: [
     BrowserModule,

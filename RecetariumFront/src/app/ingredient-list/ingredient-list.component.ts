@@ -32,6 +32,7 @@ export class IngredientListComponent implements OnInit {
   }
 
   deleteIngredient(ingredient: Ingredient): void {
+<<<<<<< HEAD
     this.ingredients = this.ingredients.filter(i => i !== ingredient);
   }
 
@@ -39,6 +40,9 @@ export class IngredientListComponent implements OnInit {
   updateIngredient(ingredientOld: Ingredient,ingredientUpdated: Ingredient): void {
     this.ingredients = this.ingredients.filter(i => i !== ingredientOld);
     this.ingredients = [...this.ingredients, ingredientUpdated];
+=======
+    this.ingredients = this.ingredients.filter(p => p !== ingredient);
+>>>>>>> 9a8394e200dbc6d7e2234dba5fbd81cad39a4e79
   }
 
 }

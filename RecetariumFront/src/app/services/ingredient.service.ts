@@ -19,6 +19,7 @@ export class IngredientService {
     );
   }
 
+<<<<<<< HEAD
   getIngredient(id: number): Observable<Ingredient> {
     return this.http.get<ResponseIngredient>(`${this.URL}/ingredient/${id}`).pipe(
       map(resp => resp.ingredient)
@@ -28,6 +29,11 @@ export class IngredientService {
   addIngredient(ingredient: Ingredient): Observable<Ingredient> {
     return this.http.post<ResponseIngredient>(this.URL + '/add', ingredient).pipe(
       map(resp => resp.ingredient)
+=======
+  addIngredient(ingredient: Ingredient): Observable<Ingredient> {
+    return this.http.post<ResponseIngredient>(`${this.URL}/add`, ingredient).pipe(
+      map(response => response.ingredient)
+>>>>>>> 9a8394e200dbc6d7e2234dba5fbd81cad39a4e79
     );
   }
 
