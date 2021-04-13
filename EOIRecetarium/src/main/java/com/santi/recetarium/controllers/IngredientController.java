@@ -60,7 +60,7 @@ public class IngredientController {
 	}
 	
 	//sacar nombres de ingredientes para presentar en la versión resumida
-	@GetMapping("/allnames")
+	@GetMapping("/all/names")
 	public ResponseEntity<?> getIngredientsNames(){
 		
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
