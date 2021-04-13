@@ -1,3 +1,6 @@
-<div class="col-4">{{ingredient.quantity}}</div>
-<div class="col-4">{{ingredient.measure}}</div>
-<div class="col-4">{{ingredient.name}}</div>
+<div class="col-3 pl-1">
+  <button class="btn btn-small btn-outline-danger border-0 mr-2" (click)="deleteIngredient()">X</button>
+</div>
+<div class="col-3">{{ingredient.quantity}}</div>
+<div class="col-3">{{ingredient.measure}}</div>
+<div class="col-3">{{ingredient.name}}</div>

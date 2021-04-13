@@ -1,5 +1,5 @@
 export interface Ingredient {
-  id_ingredient?: number;
+  idIngredient?: number;
   name: string;
   quantity: number;
   measure: string;
