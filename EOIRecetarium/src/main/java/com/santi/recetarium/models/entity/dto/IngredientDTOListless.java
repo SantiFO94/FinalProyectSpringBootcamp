@@ -1,15 +1,15 @@
 package com.santi.recetarium.models.entity.dto;
 
-import com.santi.recetarium.models.entity.Ingredients;
+import com.santi.recetarium.models.entity.Ingredient;
 
 public class IngredientDTOListless {
 
 	private int idIngredient;
 	private String name;
 	
-	public IngredientDTOListless(Ingredients ingredient) {
+	public IngredientDTOListless(Ingredient ingredient) {
 		this.idIngredient = ingredient.getIdIngredient();
-		this.name = ingredient.getName();
+		this.name = ingredient.getIngredientName();
 	}
 
 	public int getIdIngredient() {

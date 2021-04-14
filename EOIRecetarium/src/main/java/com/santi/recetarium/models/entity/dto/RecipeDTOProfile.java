@@ -1,22 +1,20 @@
 package com.santi.recetarium.models.entity.dto;
 
-import com.santi.recetarium.models.entity.Recipes;
+import com.santi.recetarium.models.entity.Recipe;
 
 public class RecipeDTOProfile {
 
 	private String recipeName;
 	private String description;
-	private String difficulty;
+	private int difficulty;
+	private String image;
 //	private Set<Ingredients> ingredients = new HashSet<Ingredients>(0);
 	
-	public RecipeDTOProfile() {
-		
-	}
-	
-	public RecipeDTOProfile(Recipes recipe) {
+	public RecipeDTOProfile(Recipe recipe) {
 		this.recipeName= recipe.getRecipeName();
 		this.description = recipe.getDescription();
 		this.difficulty = recipe.getDifficulty();
+		this.image = recipe.getImage();
 //		this.ingredients = recipe.getIngredientses();
 	}
 
@@ -36,12 +34,20 @@ public class RecipeDTOProfile {
 		this.description = description;
 	}
 
-	public String getDifficulty() {
+	public int getDifficulty() {
 		return difficulty;
 	}
 
-	public void setDifficulty(String difficulty) {
+	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 //	public Set<Ingredients> getIngredients() {

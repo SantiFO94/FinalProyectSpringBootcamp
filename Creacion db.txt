@@ -1,0 +1,50 @@
+CREATE DATABASE recetarium
+
+CREATE TABLE ingredients(
+
+    id_ingredient serial NOT NULL,
+    ingredient_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT ingredients_pkey PRIMARY KEY (id_ingredient)
+)
+
+CREATE TABLE recipes(
+
+    id_recipe serial NOT NULL,
+    recipe_name character varying COLLATE pg_catalog."default" NOT NULL,
+    difficulty int COLLATE pg_catalog."default",
+    time_required character varying COLLATE pg_catalog."default",
+    description character varying COLLATE pg_catalog."default",
+    instructions character varying COLLATE pg_catalog."default" NOT NULL,
+    image character varying COLLATE pg_catalog."default",
+    CONSTRAINT recipes_pkey PRIMARY KEY (id_recipe)
+)
+
+CREATE TABLE recipe_ingredient(
+
+    id_recipe int NOT NULL,
+    id_ingredient int NOT NULL,
+    CONSTRAINT recipe_ingredient_pkey PRIMARY KEY (id_recipe, id_ingredient),
+    CONSTRAINT recipe_ingredient_id_ingredient_fkey FOREIGN KEY (id_ingredient)
+        REFERENCES public.ingredients (id_ingredient) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
+    CONSTRAINT recipe_ingredient_id_recipe_fkey FOREIGN KEY (id_recipe)
+        REFERENCES public.recipes (id_recipe) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
+
+INSERT INTO public.ingredients (ingredient_name) VALUES ('pollo');
+INSERT INTO public.ingredients (ingredient_name) VALUES ('cebolla');
+INSERT INTO public.ingredients (ingredient_name) VALUES ('merengue');
+INSERT INTO public.ingredients (ingredient_name) VALUES ('azucar');
+INSERT INTO public.ingredients (ingredient_name) VALUES ('especias');
+
+INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image) VALUES ('Pollo al horno', 1, 'un rato', 'Un pollo bien rico', 'Meter el pollo al horno', NULL);
+INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image) VALUES ('Rogel', 3, 'Nada y menos', 'Una tarta bien rica', 'Hacer la tarta', NULL);
+
+INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (1, 1);
+INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (1, 2);
+INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (1, 5);
+INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (2, 3);
+INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (2, 4);

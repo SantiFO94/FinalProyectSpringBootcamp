@@ -2,18 +2,18 @@ package com.santi.recetarium.models.services;
 
 import java.util.List;
 
-import com.santi.recetarium.models.entity.Ingredients;
+import com.santi.recetarium.models.entity.Ingredient;
 
 
 public interface IIngredientService {
 	
-	public List<Ingredients> findAll();
+	public List<Ingredient> findAll();
 
-    public Ingredients findById(Integer id);
+    public Ingredient findById(Integer id);
 
-    public Ingredients save(Ingredients ingredient);
+    public Ingredient save(Ingredient ingredient);
 
-    public void delete(Ingredients tarea);
+    public void delete(Ingredient tarea);
 
     public void deleteById(Integer id);
 }

@@ -1,13 +1,13 @@
 package com.santi.recetarium.models.entity.dto;
 
-import com.santi.recetarium.models.entity.Ingredients;
+import com.santi.recetarium.models.entity.Ingredient;
 
 public class IngredientDTOCard {
 
 	private String name;
 	
-	public IngredientDTOCard(Ingredients ingredient) {
-		this.name = ingredient.getName();
+	public IngredientDTOCard(Ingredient ingredient) {
+		this.name = ingredient.getIngredientName();
 	}
 
 	public String getName() {

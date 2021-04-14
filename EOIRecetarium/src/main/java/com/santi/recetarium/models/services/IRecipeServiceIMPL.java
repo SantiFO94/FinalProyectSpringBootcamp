@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.santi.recetarium.models.entity.Recipes;
+import com.santi.recetarium.models.entity.Recipe;
 import com.santi.recetarium.models.entity.dao.IRecipeDAO;
 
 @Service
@@ -15,31 +15,28 @@ public class IRecipeServiceIMPL implements IRecipeService {
 	private IRecipeDAO recipeDAO;
 	
 	@Override
-	public List<Recipes> findAll() {
-		return (List<Recipes>)recipeDAO.findAll();
+	public List<Recipe> findAll() {
+		return (List<Recipe>)recipeDAO.findAll();
 	}
 
 	@Override
-	public Recipes findById(Integer id) {
+	public Recipe findById(Integer id) {
 		return recipeDAO.findById(id).orElse(null);
 	}
 
 	@Override
-	public Recipes save(Recipes ingredient) {
-		// TODO Auto-generated method stub
-		return null;
+	public Recipe save(Recipe ingredient) {
+		return recipeDAO.save(ingredient);
 	}
 
 	@Override
-	public void delete(Recipes tarea) {
-		// TODO Auto-generated method stub
-
+	public void delete(Recipe ingredient) {
+		recipeDAO.delete(ingredient);
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-
+		recipeDAO.deleteById(id);
 	}
 
 }

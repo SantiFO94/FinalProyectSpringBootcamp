@@ -2,18 +2,18 @@ package com.santi.recetarium.models.services;
 
 import java.util.List;
 
-import com.santi.recetarium.models.entity.Recipes;
+import com.santi.recetarium.models.entity.Recipe;
 
 
 public interface IRecipeService {
 
-	public List<Recipes> findAll();
+	public List<Recipe> findAll();
 
-    public Recipes findById(Integer id);
+    public Recipe findById(Integer id);
 
-    public Recipes save(Recipes ingredient);
+    public Recipe save(Recipe ingredient);
 
-    public void delete(Recipes tarea);
+    public void delete(Recipe tarea);
 
     public void deleteById(Integer id);
 }

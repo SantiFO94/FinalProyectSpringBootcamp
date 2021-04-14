@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santi.recetarium.models.entity.Recipes;
+import com.santi.recetarium.models.entity.Recipe;
 import com.santi.recetarium.models.entity.dto.RecipeDTOIngredientListless;
 import com.santi.recetarium.models.entity.dto.RecipeDTOProfile;
 import com.santi.recetarium.models.entity.response.ResponseRecipeDTOIngredientListless;
@@ -32,19 +32,20 @@ import com.santi.recetarium.models.services.IRecipeServiceIMPL;
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
-//Aqui los metodos que devuelven objeto individual estan con Response del DTO
+
 	@Autowired
 	private IRecipeServiceIMPL recipeService;
 	
 	/**
-	 * Recuperar todas las recetas completas.
-	 * @return ResponseEntity<Map<String, Object>> con mensaje de error en caso de que ocurra algún problema
-	 * @return ResponseEntity<ResponseRecipes> con la lista de recetas recuperadas
+	 * Recupera todas las recetas completas.
+	 * 
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la respuesta conteniendo la lista de recetas recuperadas en caso de que todo vaya bien.
 	 */
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllRecipes(){
 		
-		List<Recipes> recipes = new ArrayList<Recipes>();
+		List<Recipe> recipes = new ArrayList<Recipe>();
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -65,12 +66,18 @@ public class RecipeController {
 		
 		return new ResponseEntity<ResponseRecipesDTOIngredientListless>(responseRecipe, HttpStatus.OK);
 	}
-	
-	//sacar resumen de recetas para presentar en el perfil de usuario
+	/**
+	 * 
+	 * Recuperar resumen de las recetas para presentarlas en el perfil de usuario.
+	 * Contiene solo nombre, descripción y dificultad de la receta.
+	 * 
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la lista de recetas resumidas recuperadas en caso de que todo vaya bien.
+	 */
 	@GetMapping("/all/summaries")
 	public ResponseEntity<?> getRecipesSummary(){
 		
-		List<Recipes> recipes = new ArrayList<Recipes>();
+		List<Recipe> recipes = new ArrayList<Recipe>();
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -92,11 +99,18 @@ public class RecipeController {
 		return new ResponseEntity<ResponseRecipesDTOProfile>(responseRecipe, HttpStatus.OK);
 	}
 	
-	//encontrar una receta completa en el perfil 
+	/**
+	 * 
+	 * Recuperar una receta a partir de su identificador, mostrando todos sus atributos.
+	 * 
+	 * @param id id asociado como clave primaria a la receta que se quiere recuperar
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la receta recuperada completa en caso de que todo vaya bien.
+	 */
 	@GetMapping("/recipe/{id}")
 	public ResponseEntity<?> getRecipe(@PathVariable Integer id){
 
-		Recipes recipe = null;
+		Recipe recipe = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -111,18 +125,28 @@ public class RecipeController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		RecipeDTOIngredientListless recipeIngredientListless = new RecipeDTOIngredientListless(recipe);
-		ResponseRecipeDTOIngredientListless responseRecipe = new ResponseRecipeDTOIngredientListless(recipeIngredientListless);
-		
+//		RecipeDTOIngredientListless recipeIngredientListless = new RecipeDTOIngredientListless(recipe);
+//		ResponseRecipeDTOIngredientListless responseRecipe = new ResponseRecipeDTOIngredientListless(recipeIngredientListless);
+		ResponseRecipeDTOIngredientListless responseRecipe = 
+				new ResponseRecipeDTOIngredientListless(
+						new RecipeDTOIngredientListless(recipe));
 		
 		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * Agrega una receta nueva a la base de datos a partir de sus atributos sin id.
+	 * 
+	 * @param recipe recipe body del elemento receta que se quiere agregar
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la receta agregada completa en caso de que todo vaya bien.
+	 */
 	//agregar validaciones con @Valid y BindingResult result
 	@PostMapping("/add")
-	public ResponseEntity<?> addRecipe(@RequestBody Recipes recipe){
+	public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe){
 		
-		Recipes newRecipe = null;
+		Recipe newRecipe = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -133,24 +157,38 @@ public class RecipeController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		RecipeDTOIngredientListless recipeIngredientListless = new RecipeDTOIngredientListless(newRecipe);
-		ResponseRecipeDTOIngredientListless responseRecipe = new ResponseRecipeDTOIngredientListless(recipeIngredientListless);
-
+//		RecipeDTOIngredientListless recipeIngredientListless = new RecipeDTOIngredientListless(newRecipe);
+//		ResponseRecipeDTOIngredientListless responseRecipe = new ResponseRecipeDTOIngredientListless(recipeIngredientListless);
+		
+		ResponseRecipeDTOIngredientListless responseRecipe = 
+				new ResponseRecipeDTOIngredientListless(
+						new RecipeDTOIngredientListless(newRecipe));
+		
 		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe,HttpStatus.CREATED);
 	}
 	
-	
+	//revisar si funciona bien la actualización con el nuevo constructor	
+	/**
+	 * 
+	 * Actualiza una receta existente en la base de datos.
+	 * 
+	 * @param recipe recipe body con los nuevos datos.
+	 * @param id id asociado como clave primaria a la receta que se quiere actualizar
+	 * 
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la receta actualizada completa en caso de que todo vaya bien.
+	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateRecipe(@RequestBody Recipes recipe, @PathVariable Integer id){
+	public ResponseEntity<?> updateRecipe(@RequestBody Recipe recipe, @PathVariable Integer id){
 
-		Recipes recipeOriginal = null;
-		Recipes recipeUpdated = null;
+		Recipe recipeOriginal = null;
+		Recipe recipeUpdated = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
 			recipeOriginal = recipeService.findById(id);
 		}catch (DataAccessException e) { 
-			responseError.put("mensaje", "Error al recuperar el ingrediente de la base de datos");
+			responseError.put("mensaje", "Error al recuperar la receta de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -161,12 +199,14 @@ public class RecipeController {
 		}
 		
 		try {
-			recipeOriginal.setRecipeName(recipe.getRecipeName());
-			recipeOriginal.setDifficulty(recipe.getDifficulty());
-			recipeOriginal.setTimeRequired(recipe.getTimeRequired());
-			recipeOriginal.setDescription(recipe.getDescription());
-			recipeOriginal.setInstructions(recipe.getInstructions());
-			recipeOriginal.setIngredientses(recipe.getIngredientses());
+			recipeOriginal = new Recipe(id, recipe);
+//			recipeOriginal.setRecipeName(recipe.getRecipeName());
+//			recipeOriginal.setDifficulty(recipe.getDifficulty());
+//			recipeOriginal.setTimeRequired(recipe.getTimeRequired());
+//			recipeOriginal.setDescription(recipe.getDescription());
+//			recipeOriginal.setInstructions(recipe.getInstructions());
+//			recipeOriginal.setIngredients(recipe.getIngredients());
+//			recipeOriginal.setImage(recipe.getImage());
 			recipeUpdated = recipeService.save(recipeOriginal);
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al actualizar la receta en la base de datos");
@@ -174,12 +214,25 @@ public class RecipeController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		RecipeDTOIngredientListless recipeIngredientListless = new RecipeDTOIngredientListless(recipeUpdated);
-		ResponseRecipeDTOIngredientListless responseRecipe = new ResponseRecipeDTOIngredientListless(recipeIngredientListless);
+//		RecipeDTOIngredientListless recipeIngredientListless = new RecipeDTOIngredientListless(recipeUpdated);
+//		ResponseRecipeDTOIngredientListless responseRecipe = new ResponseRecipeDTOIngredientListless(recipeIngredientListless);
+		
+		ResponseRecipeDTOIngredientListless responseRecipe = 
+				new ResponseRecipeDTOIngredientListless(
+						new RecipeDTOIngredientListless(recipeUpdated));
+
 
 		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * Borra una receta existente en la base de datos
+	 * 
+	 * @param id id asociado como clave primaria a la receta que se quiere borrar
+	 * @return ResponseEntity con mensaje indicando si ha ocurrido algún error 
+	 * o se ha realizado el borrado correctamente.
+	 */
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteRecipe(@PathVariable Integer id){
 		

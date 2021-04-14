@@ -15,9 +15,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "recipes")
-public class Recipes implements java.io.Serializable {
+public class Recipe implements java.io.Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,38 +24,49 @@ public class Recipes implements java.io.Serializable {
 	private int idRecipe;
 	@Column(name = "recipe_name", nullable = false)
 	private String recipeName;
-	@Column(name = "dificulty")
-	private String difficulty;
+	@Column(name = "difficulty")
+	private int difficulty;
 	@Column(name = "time_required")
 	private String timeRequired;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "instructions", nullable = false)
 	private String instructions;
+	@Column(name = "image")
+	private String image;
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "recipe_ingredient", joinColumns = {
 			@JoinColumn(name = "id_recipe", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "id_ingredient", nullable = false, updatable = false) })
-	private Set<Ingredients> ingredients = new HashSet<Ingredients>(0);
-
-	public Recipes() {
+	private Set<Ingredient> ingredients = new HashSet<Ingredient>(0);
+	
+	/**
+	 * Constructor para actualizar una receta existente con una nueva
+	 * 
+	 * @param idRecipe identificador de la receta que se quiere actualizar
+	 * @param recipe body que contiene los nuevos datos
+	 */
+	public Recipe(int idRecipe, Recipe recipe) {
+		this.idRecipe = idRecipe;
+		this.recipeName = recipe.getRecipeName();
+		this.difficulty = recipe.getDifficulty();
+		this.timeRequired = recipe.getTimeRequired();
+		this.description = recipe.getDescription();
+		this.instructions = recipe.getInstructions();
+		this.image = recipe.getImage();
+		this.ingredients = recipe.getIngredients();
 	}
-
-	public Recipes(int idRecipe, String name, String instructions) {
+	
+	public Recipe(int idRecipe, String name, int difficulty, String timeRequired, String description,
+			String instructions, String image, Set<Ingredient> ingredients) {
 		this.idRecipe = idRecipe;
 		this.recipeName = name;
-		this.instructions = instructions;
-	}
-
-	public Recipes(int idRecipe, String name, String dificulty, String timeRequired, String description,
-			String instructions, Set<Ingredients> ingredientses) {
-		this.idRecipe = idRecipe;
-		this.recipeName = name;
-		this.difficulty = dificulty;
+		this.difficulty = difficulty;
 		this.timeRequired = timeRequired;
 		this.description = description;
 		this.instructions = instructions;
-		this.ingredients = ingredientses;
+		this.image = image;
+		this.ingredients = ingredients;
 	}
 
 	
@@ -77,11 +87,11 @@ public class Recipes implements java.io.Serializable {
 	}
 
 	
-	public String getDifficulty() {
+	public int getDifficulty() {
 		return this.difficulty;
 	}
 
-	public void setDifficulty(String difficulty) {
+	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
 
@@ -109,12 +119,20 @@ public class Recipes implements java.io.Serializable {
 		this.instructions = instructions;
 	}
 
-	public Set<Ingredients> getIngredientses() {
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Set<Ingredient> getIngredients() {
 		return this.ingredients;
 	}
 
-	public void setIngredientses(Set<Ingredients> ingredientses) {
-		this.ingredients = ingredientses;
+	public void setIngredients(Set<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 
 }

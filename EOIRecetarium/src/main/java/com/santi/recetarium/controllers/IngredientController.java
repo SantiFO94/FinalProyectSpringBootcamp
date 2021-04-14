@@ -19,27 +19,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santi.recetarium.models.entity.Ingredients;
+import com.santi.recetarium.models.entity.Ingredient;
 import com.santi.recetarium.models.entity.dto.IngredientDTOCard;
 import com.santi.recetarium.models.entity.dto.IngredientDTOListless;
 import com.santi.recetarium.models.entity.response.ResponseIngredientsDTOCard;
 import com.santi.recetarium.models.entity.response.ResponseIngredientsDTOListless;
 import com.santi.recetarium.models.services.IIngredientServiceIMPL;
 
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/ingredients")
 public class IngredientController {
-//Aqui los metodos que devuelven objeto individual estan con DTO directamente
+
 	@Autowired
 	private IIngredientServiceIMPL ingredientService;
 	
-	//sacar todos los ingredientes completos en la receta
+	/**
+	 * Recupera todos los ingredientes completos.
+	 * 
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la respuesta conteniendo la lista de ingredientes recuperados en caso de que todo vaya bien.
+	 */
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllIngredients(){
 		
-		List<Ingredients> ingredients = new ArrayList<Ingredients>();
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -65,7 +69,7 @@ public class IngredientController {
 	@GetMapping("/all/names")
 	public ResponseEntity<?> getIngredientsNames(){
 		
-		List<Ingredients> ingredients = new ArrayList<Ingredients>();
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -91,7 +95,7 @@ public class IngredientController {
 	@GetMapping("/ingredient/{id}")
 	public ResponseEntity<?> getIngredient(@PathVariable Integer id){
 
-		Ingredients ingredient = null;
+		Ingredient ingredient = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -113,9 +117,9 @@ public class IngredientController {
 	
 	//agregar validaciones con @Valid y BindingResult result
 	@PostMapping("/add")
-	public ResponseEntity<?> addIngredient(@RequestBody Ingredients ingredient){
+	public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient){
 		
-		Ingredients newIngredient = null;
+		Ingredient newIngredient = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -131,12 +135,12 @@ public class IngredientController {
 		return new ResponseEntity<IngredientDTOListless>(responseIngredient,HttpStatus.CREATED);
 	}
 	
-	
+	//revisar si funciona bien la actualización con el nuevo constructor
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateIngredient(@RequestBody Ingredients ingredient, @PathVariable Integer id){
+	public ResponseEntity<?> updateIngredient(@RequestBody Ingredient ingredient, @PathVariable Integer id){
 
-		Ingredients ingredientOriginal = null;
-		Ingredients ingredientUpdated = null;
+		Ingredient ingredientOriginal = null;
+		Ingredient ingredientUpdated = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
@@ -153,7 +157,8 @@ public class IngredientController {
 		}
 		
 		try {
-			ingredientOriginal.setName(ingredient.getName());
+			ingredientOriginal = new Ingredient(ingredient);
+//			ingredientOriginal.setIngredientName(ingredient.getIngredientName());
 //			ingredientOriginal.setQuantity(ingredient.getQuantity());
 //			ingredientOriginal.setMeasure(ingredient.getMeasure());
 			ingredientUpdated = ingredientService.save(ingredientOriginal);

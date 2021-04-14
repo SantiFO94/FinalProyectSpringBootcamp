@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ingredients")
-public class Ingredients implements java.io.Serializable {
+public class Ingredient implements java.io.Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -22,21 +22,29 @@ public class Ingredients implements java.io.Serializable {
 	@Column(name = "id_ingredient", unique = true, nullable = false)
 	private int idIngredient;
 	@Column(name = "ingredient_name", nullable = false)
-	private String name;
+	private String ingredientName;
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "ingredients")
-	private Set<Recipes> recipes = new HashSet<Recipes>(0);
+	private Set<Recipe> recipes = new HashSet<Recipe>(0);
 
-	public Ingredients() {
+	/**
+	 * Constructor para actualizar un ingrediente existente con uno nuevo
+	 * 
+	 * @param idIngredient identificador del ingrediente que se quiere actualizar
+	 * @param ingredient body que contiene los nuevos datos
+	 */
+	public Ingredient(int idIngredient, Ingredient ingredient) {
+		this.idIngredient = idIngredient;
+		this.ingredientName = ingredient.getIngredientName();
+	}
+	
+	public Ingredient(Ingredient ingredient) {
+		this.idIngredient = ingredient.getIdIngredient();
+		this.ingredientName = ingredient.getIngredientName();
 	}
 
-	public Ingredients(int idIngredient, String name) {
+	public Ingredient(int idIngredient, String name, Set<Recipe> recipeses) {
 		this.idIngredient = idIngredient;
-		this.name = name;
-	}
-
-	public Ingredients(int idIngredient, String name, Set<Recipes> recipeses) {
-		this.idIngredient = idIngredient;
-		this.name = name;
+		this.ingredientName = name;
 		this.recipes = recipeses;
 	}
 
@@ -50,21 +58,20 @@ public class Ingredients implements java.io.Serializable {
 	}
 
 	
-	public String getName() {
-		return this.name;
+	public String getIngredientName() {
+		return this.ingredientName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setIngredientName(String name) {
+		this.ingredientName = name;
 	}
 
-	
-	public Set<Recipes> getRecipeses() {
+	public Set<Recipe> getRecipes() {
 		return this.recipes;
 	}
 
-	public void setRecipeses(Set<Recipes> recipeses) {
-		this.recipes = recipeses;
+	public void setRecipes(Set<Recipe> recipes) {
+		this.recipes = recipes;
 	}
 
 }

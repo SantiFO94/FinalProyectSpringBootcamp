@@ -3,27 +3,28 @@ package com.santi.recetarium.models.entity.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.santi.recetarium.models.entity.Recipes;
+import com.santi.recetarium.models.entity.Recipe;
 
 public class RecipeDTOIngredientListless {
 
 	private int idRecipe;
 	private String recipeName;
-	private String difficulty;
+	private int difficulty;
 	private String timeRequired;
 	private String description;
 	private String instructions;
+	private String image;
 	private Set<IngredientDTOListless> ingredients = new HashSet<IngredientDTOListless>(0);
 	
-	public RecipeDTOIngredientListless(Recipes recipe) {
+	public RecipeDTOIngredientListless(Recipe recipe) {
 		this.idRecipe = recipe.getIdRecipe();
 		this.recipeName= recipe.getRecipeName();
 		this.difficulty = recipe.getDifficulty();
 		this.timeRequired = recipe.getTimeRequired();
 		this.description = recipe.getDescription();
 		this.instructions = recipe.getInstructions();
-		
-		recipe.getIngredientses().forEach(i->this.ingredients.add(new IngredientDTOListless(i)));
+		this.image = recipe.getImage();
+		recipe.getIngredients().forEach(i->this.ingredients.add(new IngredientDTOListless(i)));
 
 	}
 
@@ -43,11 +44,11 @@ public class RecipeDTOIngredientListless {
 		this.recipeName = recipeName;
 	}
 
-	public String getDifficulty() {
+	public int getDifficulty() {
 		return difficulty;
 	}
 
-	public void setDifficulty(String difficulty) {
+	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
 
@@ -73,6 +74,14 @@ public class RecipeDTOIngredientListless {
 
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public Set<IngredientDTOListless> getIngredients() {
