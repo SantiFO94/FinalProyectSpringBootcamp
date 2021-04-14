@@ -1,9 +1,9 @@
-package com.santi.recetarium.entity.response;
+package com.santi.recetarium.models.entity.response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.santi.recetarium.entity.dto.IngredientDTOCard;
+import com.santi.recetarium.models.entity.dto.IngredientDTOCard;
 
 public class ResponseIngredientsDTOCard {
 
