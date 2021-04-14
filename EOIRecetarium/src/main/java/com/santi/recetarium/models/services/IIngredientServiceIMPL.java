@@ -1,12 +1,12 @@
-package com.santi.recetarium.services;
+package com.santi.recetarium.models.services;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.santi.recetarium.entity.Ingredient;
-import com.santi.recetarium.entity.dao.IIngredientDAO;
+import com.santi.recetarium.models.entity.Ingredients;
+import com.santi.recetarium.models.entity.dao.IIngredientDAO;
 
 @Service
 public class IIngredientServiceIMPL implements IIngredientService {
@@ -15,27 +15,27 @@ public class IIngredientServiceIMPL implements IIngredientService {
 	private IIngredientDAO ingredientDAO;
 	
 	@Override
-	public List<Ingredient> findAll() {
-		return (List<Ingredient>)ingredientDAO.findAll();
+	public List<Ingredients> findAll() {
+		return (List<Ingredients>)ingredientDAO.findAll();
 	}
 
 	@Override
-	public Ingredient findById(Long id) {
+	public Ingredients findById(Integer id) {
 		return ingredientDAO.findById(id).orElse(null);
 	}
 
 	@Override
-	public Ingredient save(Ingredient ingredient) {
+	public Ingredients save(Ingredients ingredient) {
 		return ingredientDAO.save(ingredient);
 	}
 
 	@Override
-	public void delete(Ingredient ingredient) {
+	public void delete(Ingredients ingredient) {
 		ingredientDAO.delete(ingredient);
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Integer id) {
 		ingredientDAO.deleteById(id);
 	}
 

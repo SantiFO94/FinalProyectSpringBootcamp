@@ -10,5 +10,7 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/recetarium</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <mapping class="com.santi.recetarium.models.entity.Ingredients"/>
+        <mapping class="com.santi.recetarium.models.entity.Recipes"/>
     </session-factory>
 </hibernate-configuration>
