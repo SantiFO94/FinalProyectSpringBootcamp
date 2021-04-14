@@ -1,6 +1,6 @@
-package com.santi.recetarium.models.entity.dto;
+package com.santi.recetarium.models.entities.dto;
 
-import com.santi.recetarium.models.entity.Ingredient;
+import com.santi.recetarium.models.entities.Ingredient;
 
 public class IngredientDTOListless {
 

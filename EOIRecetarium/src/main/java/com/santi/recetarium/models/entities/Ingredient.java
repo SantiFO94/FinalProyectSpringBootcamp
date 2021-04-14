@@ -1,4 +1,4 @@
-package com.santi.recetarium.models.entity;
+package com.santi.recetarium.models.entities;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -2,7 +2,7 @@ package com.santi.recetarium.models.services;
 
 import java.util.List;
 
-import com.santi.recetarium.models.entity.Ingredient;
+import com.santi.recetarium.models.entities.Ingredient;
 
 
 public interface IIngredientService {

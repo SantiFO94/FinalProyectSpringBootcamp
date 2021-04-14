@@ -1,9 +1,9 @@
-package com.santi.recetarium.models.entity.response;
+package com.santi.recetarium.models.entities.responses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.santi.recetarium.models.entity.dto.RecipeDTOIngredientListless;
+import com.santi.recetarium.models.entities.dto.RecipeDTOIngredientListless;
 
 public class ResponseRecipesDTOIngredientListless {
 

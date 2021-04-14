@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.santi.recetarium.models.entity.Ingredient;
-import com.santi.recetarium.models.entity.dao.IIngredientDAO;
+import com.santi.recetarium.models.dao.IIngredientDAO;
+import com.santi.recetarium.models.entities.Ingredient;
 
 @Service
 public class IIngredientServiceIMPL implements IIngredientService {

@@ -1,9 +1,9 @@
-package com.santi.recetarium.models.entity.dto;
+package com.santi.recetarium.models.entities.dto;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.santi.recetarium.models.entity.Recipe;
+import com.santi.recetarium.models.entities.Recipe;
 
 public class RecipeDTOIngredientListless {
 

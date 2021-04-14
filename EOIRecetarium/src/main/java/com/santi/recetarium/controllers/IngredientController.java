@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santi.recetarium.models.entity.Ingredient;
-import com.santi.recetarium.models.entity.dto.IngredientDTOCard;
-import com.santi.recetarium.models.entity.dto.IngredientDTOListless;
-import com.santi.recetarium.models.entity.response.ResponseIngredientsDTOCard;
-import com.santi.recetarium.models.entity.response.ResponseIngredientsDTOListless;
+import com.santi.recetarium.models.entities.Ingredient;
+import com.santi.recetarium.models.entities.dto.IngredientDTOCard;
+import com.santi.recetarium.models.entities.dto.IngredientDTOListless;
+import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOCard;
+import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOListless;
 import com.santi.recetarium.models.services.IIngredientServiceIMPL;
 
 @CrossOrigin(origins = "http://localhost:4200")

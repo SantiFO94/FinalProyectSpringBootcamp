@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santi.recetarium.models.entity.Recipe;
-import com.santi.recetarium.models.entity.dto.RecipeDTOIngredientListless;
-import com.santi.recetarium.models.entity.dto.RecipeDTOProfile;
-import com.santi.recetarium.models.entity.response.ResponseRecipeDTOIngredientListless;
-import com.santi.recetarium.models.entity.response.ResponseRecipesDTOIngredientListless;
-import com.santi.recetarium.models.entity.response.ResponseRecipesDTOProfile;
+import com.santi.recetarium.models.entities.Recipe;
+import com.santi.recetarium.models.entities.dto.RecipeDTOIngredientListless;
+import com.santi.recetarium.models.entities.dto.RecipeDTOProfile;
+import com.santi.recetarium.models.entities.responses.ResponseRecipeDTOIngredientListless;
+import com.santi.recetarium.models.entities.responses.ResponseRecipesDTOIngredientListless;
+import com.santi.recetarium.models.entities.responses.ResponseRecipesDTOProfile;
 import com.santi.recetarium.models.services.IRecipeServiceIMPL;
 
 
