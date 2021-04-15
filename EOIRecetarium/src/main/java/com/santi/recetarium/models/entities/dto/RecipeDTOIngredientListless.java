@@ -24,7 +24,8 @@ public class RecipeDTOIngredientListless {
 		this.description = recipe.getDescription();
 		this.instructions = recipe.getInstructions();
 		this.image = recipe.getImage();
-		recipe.getIngredients().forEach(i->this.ingredients.add(new IngredientDTOListless(i)));
+		recipe.getIngredients().forEach(i->this.ingredients
+				.add(new IngredientDTOListless(i)));
 
 	}
 
@@ -32,65 +33,32 @@ public class RecipeDTOIngredientListless {
 		return idRecipe;
 	}
 
-	public void setIdRecipe(int idRecipe) {
-		this.idRecipe = idRecipe;
-	}
-
 	public String getRecipeName() {
 		return recipeName;
-	}
-
-	public void setRecipeName(String recipeName) {
-		this.recipeName = recipeName;
 	}
 
 	public int getDifficulty() {
 		return difficulty;
 	}
 
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
-
 	public String getTimeRequired() {
 		return timeRequired;
-	}
-
-	public void setTimeRequired(String timeRequired) {
-		this.timeRequired = timeRequired;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getInstructions() {
 		return instructions;
-	}
-
-	public void setInstructions(String instructions) {
-		this.instructions = instructions;
 	}
 
 	public String getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 	public Set<IngredientDTOListless> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(Set<IngredientDTOListless> ingredients) {
-		this.ingredients = ingredients;
-	}
-	
-	
 }

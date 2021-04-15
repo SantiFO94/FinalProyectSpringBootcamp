@@ -10,22 +10,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "ingredients")
+@Table(name = "ingredients", uniqueConstraints = @UniqueConstraint(columnNames = "ingredient_name"))
 public class Ingredient implements java.io.Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id_ingredient", unique = true, nullable = false)
 	private int idIngredient;
-	@Column(name = "ingredient_name", nullable = false)
+	
+	@Column(name = "ingredient_name", unique = true, nullable = false, length = 50)
 	private String ingredientName;
+	
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "ingredients")
 	private Set<Recipe> recipes = new HashSet<Recipe>(0);
 
+	public Ingredient() {
+		
+	}
+	
 	/**
 	 * Constructor para actualizar un ingrediente existente con uno nuevo
 	 * 
@@ -34,11 +42,6 @@ public class Ingredient implements java.io.Serializable {
 	 */
 	public Ingredient(int idIngredient, Ingredient ingredient) {
 		this.idIngredient = idIngredient;
-		this.ingredientName = ingredient.getIngredientName();
-	}
-	
-	public Ingredient(Ingredient ingredient) {
-		this.idIngredient = ingredient.getIdIngredient();
 		this.ingredientName = ingredient.getIngredientName();
 	}
 
@@ -57,7 +60,6 @@ public class Ingredient implements java.io.Serializable {
 		this.idIngredient = idIngredient;
 	}
 
-	
 	public String getIngredientName() {
 		return this.ingredientName;
 	}

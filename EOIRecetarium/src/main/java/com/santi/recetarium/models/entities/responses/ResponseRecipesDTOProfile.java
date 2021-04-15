@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.santi.recetarium.models.entities.dto.RecipeDTOProfile;
 
-public class ResponseRecipesDTOProfile {
+public class ResponseRecipesDTOProfile implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private List<RecipeDTOProfile> recipe = new ArrayList<>();
 	
 	public ResponseRecipesDTOProfile(List<RecipeDTOProfile> recipe) {

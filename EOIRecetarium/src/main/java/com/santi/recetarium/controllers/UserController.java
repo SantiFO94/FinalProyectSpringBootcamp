@@ -19,217 +19,220 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.santi.recetarium.models.entities.Recipe;
-import com.santi.recetarium.models.entities.dto.RecipeDTOIngredientListless;
-import com.santi.recetarium.models.entities.dto.RecipeDTOProfile;
-import com.santi.recetarium.models.entities.responses.ResponseRecipeDTOIngredientListless;
-import com.santi.recetarium.models.entities.responses.ResponseRecipesDTOIngredientListless;
-import com.santi.recetarium.models.entities.responses.ResponseRecipesDTOProfile;
-import com.santi.recetarium.models.services.IRecipeServiceIMPL;
-
+import com.santi.recetarium.models.entities.User;
+import com.santi.recetarium.models.entities.dto.UserDTOIngredientListless;
+import com.santi.recetarium.models.entities.dto.UserDTOPublic;
+import com.santi.recetarium.models.entities.responses.ResponseUserDTOIngredientListless;
+import com.santi.recetarium.models.entities.responses.ResponseUserDTOPublic;
+import com.santi.recetarium.models.entities.responses.ResponseUsersDTOIngredientListless;
+import com.santi.recetarium.models.entities.responses.ResponseUsersDTOPublic;
+import com.santi.recetarium.models.services.IUserServiceIMPL;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/recipes")
-public class RecipeController {
+@RequestMapping("/users")
+public class UserController {
 //agregar validaciones con @Valid y BindingResult result
 	@Autowired
-	private IRecipeServiceIMPL recipeService;
+	private IUserServiceIMPL userService;
 	
 	/**
-	 * Recupera todas las recetas completas.
+	 * Recupera todos los usuarios completos.
+	 * Para usar solo por admin y sistema.
 	 * 
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
-	 * o con la respuesta conteniendo la lista de recetas recuperadas en caso de que todo vaya bien.
+	 * o con la respuesta conteniendo la lista de usuarios recuperados en caso de que todo vaya bien.
 	 */
-	@GetMapping("/all")
-	public ResponseEntity<?> getAllRecipes(){
+	@GetMapping("/all/private")
+	public ResponseEntity<?> getAllUsers(){
 		
-		List<Recipe> recipes = new ArrayList<Recipe>();
+		List<User> users = new ArrayList<User>();
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
-			recipes = recipeService.findAll();
+			users = userService.findAll();
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al realizar la consulta de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(recipes.size()==0) {
-			responseError.put("mensaje", "No existen recetas");
+		if(users.size()==0) {
+			responseError.put("mensaje", "No existen usuarios");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		List<RecipeDTOIngredientListless> recipesIngredientsListless = new ArrayList<>();
-		recipes.forEach(r->recipesIngredientsListless.add(new RecipeDTOIngredientListless(r)));
-		ResponseRecipesDTOIngredientListless responseRecipe = new ResponseRecipesDTOIngredientListless(recipesIngredientsListless);
+		List<UserDTOIngredientListless> usersListless = new ArrayList<>();
+		users.forEach(u->usersListless.add(new UserDTOIngredientListless(u)));
+		ResponseUsersDTOIngredientListless responseUsers = new ResponseUsersDTOIngredientListless(usersListless);
 		
-		return new ResponseEntity<ResponseRecipesDTOIngredientListless>(responseRecipe, HttpStatus.OK);
+		return new ResponseEntity<ResponseUsersDTOIngredientListless>(responseUsers, HttpStatus.OK);
 	}
 	
 	/**
 	 * 
-	 * Recupera resumen de las recetas para presentarlas en el perfil de usuario.
-	 * Contiene solo nombre, descripción y dificultad de la receta.
+	 * Recupera perfil público sin contraseña de los usuarios para mostrar sus datos de manera segura.
+	 * Contiene solo id, nickname, email y recetas.
 	 * 
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
-	 * o con la lista de recetas resumidas recuperadas en caso de que todo vaya bien.
+	 * o con la lista de perfiles públicos recuperadas en caso de que todo vaya bien.
 	 */
-	@GetMapping("/all/summaries")
-	public ResponseEntity<?> getRecipesSummary(){
+	@GetMapping("/all")
+	public ResponseEntity<?> getUsersPublicProfile(){
 		
-		List<Recipe> recipes = new ArrayList<Recipe>();
+		List<User> users = new ArrayList<User>();
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
-			recipes = recipeService.findAll();
+			users = userService.findAll();
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al realizar la consulta de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(recipes.size()==0) {
+		if(users.size()==0) {
 			responseError.put("mensaje", "No existen ingredientes");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		List<RecipeDTOProfile> recipeProfile = new ArrayList<RecipeDTOProfile>();
-		recipes.forEach(r-> recipeProfile.add(new RecipeDTOProfile(r)));
-		ResponseRecipesDTOProfile responseRecipe = new ResponseRecipesDTOProfile(recipeProfile);
+		List<UserDTOPublic> usersPublic = new ArrayList<UserDTOPublic>();
+		users.forEach(r-> usersPublic.add(new UserDTOPublic(r)));
+		ResponseUsersDTOPublic responseUsers = new ResponseUsersDTOPublic(usersPublic);
 		
-		return new ResponseEntity<ResponseRecipesDTOProfile>(responseRecipe, HttpStatus.OK);
+		return new ResponseEntity<ResponseUsersDTOPublic>(responseUsers, HttpStatus.OK);
 	}
 	
+//hay que implementar otro find para que los usuarios puedan encontrarse por nickname
 	/**
 	 * 
-	 * Recupera una receta a partir de su identificador, mostrando todos sus atributos.
+	 * Recupera un usuario a partir de su identificador, mostrando todos sus atributos.
+	 * Para usar solo por admin y sistema.
 	 * 
-	 * @param id id asociado como clave primaria a la receta que se quiere recuperar
+	 * @param id id asociado como clave primaria al usuario que se quiere recuperar
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
-	 * o con la receta recuperada completa en caso de que todo vaya bien.
+	 * o con el usuario público recuperado en caso de que todo vaya bien.
 	 */
-	@GetMapping("/recipe/{id}")
-	public ResponseEntity<?> getRecipe(@PathVariable Integer id){
+	@GetMapping("/user/{id}")
+	public ResponseEntity<?> getUser(@PathVariable Integer id){
 
-		Recipe recipe = null;
+		User user = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
-			recipe = recipeService.findById(id);
+			user = userService.findById(id);
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al realizar la consulta de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(recipe==null) {
+		if(user==null) {
 			responseError.put("mensaje", "El identificador buscado no existe");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		ResponseRecipeDTOIngredientListless responseRecipe = 
-				new ResponseRecipeDTOIngredientListless(
-						new RecipeDTOIngredientListless(recipe));
+		ResponseUserDTOIngredientListless responseUser = 
+				new ResponseUserDTOIngredientListless(
+						new UserDTOIngredientListless(user));
 		
-		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe, HttpStatus.OK);
+		return new ResponseEntity<ResponseUserDTOIngredientListless>(responseUser, HttpStatus.OK);
 	}
 	
 	/**
 	 * 
-	 * Agrega una receta nueva a la base de datos a partir de sus atributos sin id.
+	 * Agrega un usuario nuevo a la base de datos a partir de sus atributos sin id.
 	 * 
-	 * @param recipe recipe body del elemento receta que se quiere agregar
+	 * @param user user body del usuario que se quiere agregar
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
-	 * o con la receta agregada completa en caso de que todo vaya bien.
+	 * o con el usuario agregado en caso de que todo vaya bien.
 	 */
 	@PostMapping("/add")
-	public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe){
+	public ResponseEntity<?> addUser(@RequestBody User user){
 		
-		Recipe newRecipe = null;
+		User newUser = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
-			newRecipe = recipeService.save(recipe);
+			newUser = userService.save(user);
 		}catch(DataAccessException e) {
 			responseError.put("mensaje", "Error al intentar insertar en la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		ResponseRecipeDTOIngredientListless responseRecipe = 
-				new ResponseRecipeDTOIngredientListless(
-						new RecipeDTOIngredientListless(newRecipe));
+		ResponseUserDTOPublic responseUser = 
+				new ResponseUserDTOPublic(
+						new UserDTOPublic(newUser));
 		
-		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe,HttpStatus.CREATED);
+		return new ResponseEntity<ResponseUserDTOPublic>(responseUser,HttpStatus.CREATED);
 	}
-	
+//revisar o implementar para poder cambiar la contraseña y que salga un mensaje sin mostrarla	
 	/**
 	 * 
-	 * Actualiza una receta existente en la base de datos.
+	 * Actualiza un usuario existente en la base de datos.
 	 * 
-	 * @param recipe recipe body con los nuevos datos.
-	 * @param id id asociado como clave primaria a la receta que se quiere actualizar
+	 * @param user user body con los nuevos datos.
+	 * @param id id asociado como clave primaria al usuario que se quiere actualizar
 	 * 
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
-	 * o con la receta actualizada completa en caso de que todo vaya bien.
+	 * o con el usuario actualizado en caso de que todo vaya bien.
 	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateRecipe(@RequestBody Recipe recipe, @PathVariable Integer id){
+	public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Integer id){
 
-		Recipe recipeOriginal = null;
-		Recipe recipeUpdated = null;
+		User userOriginal = null;
+		User userUpdated = null;
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
-			recipeOriginal = recipeService.findById(id);
+			userOriginal = userService.findById(id);
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al recuperar la receta de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(recipeOriginal==null) {
+		if(userOriginal==null) {
 			responseError.put("mensaje", "El identificador buscado no existe");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
 		try {
-			recipeOriginal = new Recipe(id, recipe);
-			recipeUpdated = recipeService.save(recipeOriginal);
+			userOriginal = new User(id, user);
+			userUpdated = userService.save(userOriginal);
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al actualizar la receta en la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		ResponseRecipeDTOIngredientListless responseRecipe = 
-				new ResponseRecipeDTOIngredientListless(
-						new RecipeDTOIngredientListless(recipeUpdated));
+		ResponseUserDTOPublic responseUser = 
+				new ResponseUserDTOPublic(
+						new UserDTOPublic(userUpdated));
 
-		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe, HttpStatus.OK);
+		return new ResponseEntity<ResponseUserDTOPublic>(responseUser, HttpStatus.OK);
 	}
 	
 	/**
 	 * 
-	 * Borra una receta existente en la base de datos
+	 * Borra un usuario existente en la base de datos
 	 * 
-	 * @param id id asociado como clave primaria a la receta que se quiere borrar
+	 * @param id id asociado como clave primaria al usuario que se quiere borrar
 	 * @return ResponseEntity con mensaje indicando si ha ocurrido algún error 
 	 * o se ha realizado el borrado correctamente.
 	 */
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteRecipe(@PathVariable Integer id){
+	public ResponseEntity<?> deleteUser(@PathVariable Integer id){
 		
 		Map<String, Object> responseError = new HashMap();
 		
 		try {
-			recipeService.deleteById(id);
+			userService.deleteById(id);
 		}catch (DataAccessException e) {
 			responseError.put("mensaje", "Error al intentar borrar de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		responseError.put("mensaje","La receta con id " + id + " ha sido borrada con éxito");
+		responseError.put("mensaje","El usuario con id " + id + " ha sido borrado con éxito");
 
 		return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NO_CONTENT);
 	}

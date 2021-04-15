@@ -1,22 +1,40 @@
 CREATE DATABASE recetarium
 
+CREATE TABLE public.users(
+
+    id_user serial NOT NULL,
+    nickname character varying(20) NOT NULL,
+    password character varying(20) NOT NULL,
+    email character varying(20),
+    PRIMARY KEY (id_users),
+    UNIQUE (nickname)
+);
+
 CREATE TABLE ingredients(
 
     id_ingredient serial NOT NULL,
-    ingredient_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    ingredient_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT ingredients_pkey PRIMARY KEY (id_ingredient)
+    UNIQUE (ingredient_name)
 );
 
 CREATE TABLE recipes(
 
     id_recipe serial NOT NULL,
-    recipe_name character varying COLLATE pg_catalog."default" NOT NULL,
+    recipe_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
     difficulty int,
-    time_required character varying COLLATE pg_catalog."default",
+    time_required character varying(20) COLLATE pg_catalog."default",
     description character varying COLLATE pg_catalog."default",
     instructions character varying COLLATE pg_catalog."default" NOT NULL,
     image character varying COLLATE pg_catalog."default",
+    id_user integer,
     CONSTRAINT recipes_pkey PRIMARY KEY (id_recipe)
+    UNIQUE (recipe_name)
+    CONSTRAINT recipe_id_user_fkey FOREIGN KEY (id_user)
+    CONSTRAINT recipes_id_user_fkey FOREIGN KEY (id_user)
+      REFERENCES public.users (id_user)
+      ON UPDATE CASCADE
+      ON DELETE CASCADE
 );
 
 CREATE TABLE recipe_ingredient(
@@ -34,14 +52,19 @@ CREATE TABLE recipe_ingredient(
         ON DELETE CASCADE
 );
 
+INSERT INTO public.users (nickname, password, email) VALUES ('poscarbean', '1234', 'poscarbean@email.com');
+INSERT INTO public.users (nickname, password, email) VALUES ('yagofo94', '1234', 'yagofo94@email.com');
+
 INSERT INTO public.ingredients (ingredient_name) VALUES ('pollo');
 INSERT INTO public.ingredients (ingredient_name) VALUES ('cebolla');
 INSERT INTO public.ingredients (ingredient_name) VALUES ('merengue');
 INSERT INTO public.ingredients (ingredient_name) VALUES ('azucar');
 INSERT INTO public.ingredients (ingredient_name) VALUES ('especias');
 
-INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image) VALUES ('Pollo al horno', 1, 'un rato', 'Un pollo bien rico', 'Meter el pollo al horno', NULL);
-INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image) VALUES ('Rogel', 3, 'Nada y menos', 'Una tarta bien rica', 'Hacer la tarta', NULL);
+INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image, id_user) VALUES ('Pollo al horno', 1, 'un rato', 'Un pollo bien rico', 'Meter el pollo al horno', NULL, 1);
+INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image, id_user) VALUES ('Rogel', 3, 'Nada y menos', 'Una tarta bien rica', 'Hacer la tarta', NULL, 2);
+INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image, id_user) VALUES ('Pollo al microondas', 1, 'un rato', 'Un pollo bien rico', 'Meter el pollo al horno', NULL, 1);
+INSERT INTO public.recipes (recipe_name, difficulty, time_required, description, instructions, image, id_user) VALUES ('Rogel magico', 3, 'Nada y menos', 'Una tarta bien rica', 'Hacer la tarta', NULL, 2);
 
 INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (1, 1);
 INSERT INTO public.recipe_ingredient (id_recipe, id_ingredient) VALUES (1, 2);

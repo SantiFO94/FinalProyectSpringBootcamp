@@ -11,35 +11,52 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "recipes")
+@Table(name = "recipes", uniqueConstraints = @UniqueConstraint(columnNames = "recipe_name"))
 public class Recipe implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id_recipe", unique = true, nullable = false)
 	private int idRecipe;
-	@Column(name = "recipe_name", nullable = false)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_user")
+	private User user;
+	
+	@Column(name = "recipe_name", unique = true, nullable = false)
 	private String recipeName;
+	
 	@Column(name = "difficulty")
 	private int difficulty;
+	
 	@Column(name = "time_required")
 	private String timeRequired;
+	
 	@Column(name = "description")
 	private String description;
+	
 	@Column(name = "instructions", nullable = false)
 	private String instructions;
+	
 	@Column(name = "image")
 	private String image;
+	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "recipe_ingredient", joinColumns = {
 			@JoinColumn(name = "id_recipe", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "id_ingredient", nullable = false, updatable = false) })
 	private Set<Ingredient> ingredients = new HashSet<Ingredient>(0);
 	
+	public Recipe() {
+		
+	}
 	/**
 	 * Constructor para actualizar una receta existente con una nueva
 	 * 
@@ -48,6 +65,7 @@ public class Recipe implements java.io.Serializable {
 	 */
 	public Recipe(int idRecipe, Recipe recipe) {
 		this.idRecipe = idRecipe;
+		this.user = recipe.getUser();
 		this.recipeName = recipe.getRecipeName();
 		this.difficulty = recipe.getDifficulty();
 		this.timeRequired = recipe.getTimeRequired();
@@ -78,6 +96,14 @@ public class Recipe implements java.io.Serializable {
 		this.idRecipe = idRecipe;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public String getRecipeName() {
 		return this.recipeName;
 	}
@@ -86,7 +112,6 @@ public class Recipe implements java.io.Serializable {
 		this.recipeName = recipeName;
 	}
 
-	
 	public int getDifficulty() {
 		return this.difficulty;
 	}

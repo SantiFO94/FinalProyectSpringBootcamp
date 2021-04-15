@@ -16,15 +16,8 @@ public class IngredientDTOListless {
 		return idIngredient;
 	}
 
-	public void setIdIngredient(int idIngredient) {
-		this.idIngredient = idIngredient;
-	}
-	
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 }

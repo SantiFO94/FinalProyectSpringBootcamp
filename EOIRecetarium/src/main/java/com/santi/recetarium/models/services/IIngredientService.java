@@ -13,7 +13,7 @@ public interface IIngredientService {
 
     public Ingredient save(Ingredient ingredient);
 
-    public void delete(Ingredient tarea);
+    public void delete(Ingredient ingredient);
 
     public void deleteById(Integer id);
 }

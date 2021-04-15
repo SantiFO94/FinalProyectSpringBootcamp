@@ -11,9 +11,9 @@ public interface IRecipeService {
 
     public Recipe findById(Integer id);
 
-    public Recipe save(Recipe ingredient);
+    public Recipe save(Recipe recipe);
 
-    public void delete(Recipe tarea);
+    public void delete(Recipe recipe);
 
     public void deleteById(Integer id);
 }

@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.santi.recetarium.models.entities.dto.IngredientDTOCard;
 
-public class ResponseIngredientsDTOCard {
+public class ResponseIngredientsDTOCard implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private List<IngredientDTOCard> ingredients = new ArrayList<IngredientDTOCard>();
 	
 	public ResponseIngredientsDTOCard(List<IngredientDTOCard> ingredients) {

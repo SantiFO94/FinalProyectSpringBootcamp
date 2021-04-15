@@ -5,4 +5,5 @@
   <table-filter match-schema="public" match-name="ingredients"/>
   <table-filter match-schema="public" match-name="recipe_ingredient"/>
   <table-filter match-schema="public" match-name="recipes"/>
+  <table-filter match-schema="public" match-name="users"/>
 </hibernate-reverse-engineering>

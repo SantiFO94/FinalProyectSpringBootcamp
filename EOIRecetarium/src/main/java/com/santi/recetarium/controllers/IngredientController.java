@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.santi.recetarium.models.entities.Ingredient;
 import com.santi.recetarium.models.entities.dto.IngredientDTOCard;
 import com.santi.recetarium.models.entities.dto.IngredientDTOListless;
+import com.santi.recetarium.models.entities.responses.ResponseIngredientDTOListless;
 import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOCard;
 import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOListless;
 import com.santi.recetarium.models.services.IIngredientServiceIMPL;
@@ -30,7 +31,7 @@ import com.santi.recetarium.models.services.IIngredientServiceIMPL;
 @RestController
 @RequestMapping("/ingredients")
 public class IngredientController {
-
+//agregar validaciones con @Valid y BindingResult result
 	@Autowired
 	private IIngredientServiceIMPL ingredientService;
 	
@@ -65,7 +66,14 @@ public class IngredientController {
 		return new ResponseEntity<ResponseIngredientsDTOListless>(responseIngredient, HttpStatus.OK);
 	}
 	
-	//sacar nombres de ingredientes para presentar en la versión resumida
+	/**
+	 * 
+	 * Recupera nombres de los ingredientes para presentarlos en la version 
+	 * resumida de la receta.
+	 * 
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la respuesta conteniendo la lista de nombres recuperados en caso de que todo vaya bien.
+	 */
 	@GetMapping("/all/names")
 	public ResponseEntity<?> getIngredientsNames(){
 		
@@ -91,7 +99,13 @@ public class IngredientController {
 		return new ResponseEntity<ResponseIngredientsDTOCard>(responseIngredient, HttpStatus.OK);
 	}
 	
-	//encontrar un ingrediente completo en la receta (cuando se menciona para ver las cantidades) 
+	/**
+	 * Recupera un ingrediente a partir de su identificador.
+	 * 
+	 * @param id id asociado como clave primaria a la receta que se quiere recuperar
+	 * @return Res ponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con la respuesta conteniendo el ingrediente recuperado en caso de que todo vaya bien.
+	 */
 	@GetMapping("/ingredient/{id}")
 	public ResponseEntity<?> getIngredient(@PathVariable Integer id){
 
@@ -110,12 +124,18 @@ public class IngredientController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		IngredientDTOListless responseIngredient = new IngredientDTOListless(ingredient);
+		ResponseIngredientDTOListless responseIngredient = 
+				new ResponseIngredientDTOListless(
+						new IngredientDTOListless(ingredient));
 		
-		return new ResponseEntity<IngredientDTOListless>(responseIngredient, HttpStatus.OK);
+		return new ResponseEntity<ResponseIngredientDTOListless>(responseIngredient, HttpStatus.OK);
 	}
 	
-	//agregar validaciones con @Valid y BindingResult result
+	/**
+	 * 
+	 * @param ingredient
+	 * @return
+	 */
 	@PostMapping("/add")
 	public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient){
 		
@@ -130,12 +150,18 @@ public class IngredientController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		IngredientDTOListless responseIngredient = new IngredientDTOListless(newIngredient);
-
-		return new ResponseEntity<IngredientDTOListless>(responseIngredient,HttpStatus.CREATED);
+		ResponseIngredientDTOListless responseIngredient = 
+				new ResponseIngredientDTOListless(
+						new IngredientDTOListless(newIngredient));
+		
+		return new ResponseEntity<ResponseIngredientDTOListless>(responseIngredient,HttpStatus.CREATED);
 	}
 	
-	//revisar si funciona bien la actualización con el nuevo constructor
+	/**
+	 * @param ingredient
+	 * @param id
+	 * @return
+	 */
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateIngredient(@RequestBody Ingredient ingredient, @PathVariable Integer id){
 
@@ -157,10 +183,7 @@ public class IngredientController {
 		}
 		
 		try {
-			ingredientOriginal = new Ingredient(ingredient);
-//			ingredientOriginal.setIngredientName(ingredient.getIngredientName());
-//			ingredientOriginal.setQuantity(ingredient.getQuantity());
-//			ingredientOriginal.setMeasure(ingredient.getMeasure());
+			ingredientOriginal = new Ingredient(id, ingredient);
 			ingredientUpdated = ingredientService.save(ingredientOriginal);
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al actualizar el ingrediente en la base de datos");
@@ -168,11 +191,18 @@ public class IngredientController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		IngredientDTOListless responseIngredient = new IngredientDTOListless(ingredientUpdated);
+		ResponseIngredientDTOListless responseIngredient = 
+				new ResponseIngredientDTOListless(
+						new IngredientDTOListless(ingredientUpdated));
 		
-		return new ResponseEntity<IngredientDTOListless>(responseIngredient, HttpStatus.OK);
+		return new ResponseEntity<ResponseIngredientDTOListless>(responseIngredient, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteIngredient(@PathVariable Integer id){
 		
