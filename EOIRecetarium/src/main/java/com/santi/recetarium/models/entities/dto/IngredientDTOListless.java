@@ -5,19 +5,19 @@ import com.santi.recetarium.models.entities.Ingredient;
 public class IngredientDTOListless {
 
 	private int idIngredient;
-	private String name;
+	private String ingredientName;
 	
 	public IngredientDTOListless(Ingredient ingredient) {
 		this.idIngredient = ingredient.getIdIngredient();
-		this.name = ingredient.getIngredientName();
+		this.ingredientName = ingredient.getIngredientName();
 	}
 
 	public int getIdIngredient() {
 		return idIngredient;
 	}
 
-	public String getName() {
-		return name;
+	public String getIngredientName() {
+		return ingredientName;
 	}
 
 }

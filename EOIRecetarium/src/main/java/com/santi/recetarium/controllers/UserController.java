@@ -136,6 +136,7 @@ public class UserController {
 		return new ResponseEntity<ResponseUserDTOIngredientListless>(responseUser, HttpStatus.OK);
 	}
 	
+//add no funciona creando nuevas recetas a la vez que el usuario en postman
 	/**
 	 * 
 	 * Agrega un usuario nuevo a la base de datos a partir de sus atributos sin id.
@@ -149,6 +150,11 @@ public class UserController {
 		
 		User newUser = null;
 		Map<String, Object> responseError = new HashMap();
+		
+		if(null== user) {
+			responseError.put("mensaje", "No se ha recibido la información.");
+			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_ACCEPTABLE);
+		}
 		
 		try {
 			newUser = userService.save(user);
@@ -164,7 +170,8 @@ public class UserController {
 		
 		return new ResponseEntity<ResponseUserDTOPublic>(responseUser,HttpStatus.CREATED);
 	}
-//revisar o implementar para poder cambiar la contraseña y que salga un mensaje sin mostrarla	
+//revisar o implementar para poder cambiar la contraseña y que salga un mensaje sin mostrarla
+//No funciona. HttpMediaTypeNotSupportedException: "Content type 'text/plain;charset=UTF-8' not supported"
 	/**
 	 * 
 	 * Actualiza un usuario existente en la base de datos.

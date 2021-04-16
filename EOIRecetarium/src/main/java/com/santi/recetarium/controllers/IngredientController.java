@@ -141,6 +141,11 @@ public class IngredientController {
 		Ingredient newIngredient = null;
 		Map<String, Object> responseError = new HashMap();
 		
+		if(null== ingredient) {
+			responseError.put("mensaje", "No se ha recibido la información.");
+			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
 		try {
 			newIngredient = ingredientService.save(ingredient);
 		}catch(DataAccessException e) {

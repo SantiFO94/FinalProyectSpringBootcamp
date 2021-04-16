@@ -64,8 +64,8 @@ public class Ingredient implements java.io.Serializable {
 		return this.ingredientName;
 	}
 
-	public void setIngredientName(String name) {
-		this.ingredientName = name;
+	public void setIngredientName(String ingredientName) {
+		this.ingredientName = ingredientName;
 	}
 
 	public Set<Recipe> getRecipes() {

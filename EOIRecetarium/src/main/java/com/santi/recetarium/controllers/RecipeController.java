@@ -147,6 +147,11 @@ public class RecipeController {
 		Recipe newRecipe = null;
 		Map<String, Object> responseError = new HashMap();
 		
+		if(null == recipe) {
+			responseError.put("mensaje", "No se ha recibido la información.");
+			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
 		try {
 			newRecipe = recipeService.save(recipe);
 		}catch(DataAccessException e) {
