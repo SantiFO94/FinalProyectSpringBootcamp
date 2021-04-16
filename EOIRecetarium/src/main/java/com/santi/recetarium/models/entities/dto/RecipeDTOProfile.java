@@ -4,17 +4,25 @@ import com.santi.recetarium.models.entities.Recipe;
 
 public class RecipeDTOProfile {
 
+	private int idRecipe;
 	private String recipeName;
 	private String description;
 	private int difficulty;
 	private String image;
 	
 	public RecipeDTOProfile(Recipe recipe) {
-		this.recipeName= recipe.getRecipeName();
+		this.idRecipe = recipe.getIdRecipe();
+		this.recipeName = recipe.getRecipeName();
 		this.description = recipe.getDescription();
 		this.difficulty = recipe.getDifficulty();
 		this.image = recipe.getImage();
 	}
+
+	
+	public int getIdRecipe() {
+		return idRecipe;
+	}
+
 
 	public String getRecipeName() {
 		return recipeName;

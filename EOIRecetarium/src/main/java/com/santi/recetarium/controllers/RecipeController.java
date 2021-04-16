@@ -173,7 +173,7 @@ public class RecipeController {
 	 * o con la receta actualizada completa en caso de que todo vaya bien.
 	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateRecipe(@RequestBody Recipe recipe, @PathVariable Integer id){
+	public ResponseEntity<?> updateRecipe(@PathVariable Integer id, @RequestBody Recipe recipe){
 
 		Recipe recipeOriginal = null;
 		Recipe recipeUpdated = null;

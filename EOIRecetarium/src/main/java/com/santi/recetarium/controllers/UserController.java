@@ -169,14 +169,13 @@ public class UserController {
 	 * 
 	 * Actualiza un usuario existente en la base de datos.
 	 * 
-	 * @param user user body con los nuevos datos.
 	 * @param id id asociado como clave primaria al usuario que se quiere actualizar
-	 * 
-	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+ 	 * @param user user body con los nuevos datos.
+ 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
 	 * o con el usuario actualizado en caso de que todo vaya bien.
 	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Integer id){
+	public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody User user){
 
 		User userOriginal = null;
 		User userUpdated = null;
@@ -185,7 +184,7 @@ public class UserController {
 		try {
 			userOriginal = userService.findById(id);
 		}catch (DataAccessException e) { 
-			responseError.put("mensaje", "Error al recuperar la receta de la base de datos");
+			responseError.put("mensaje", "Error al recuperar el usuario de la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -213,7 +212,7 @@ public class UserController {
 	
 	/**
 	 * 
-	 * Borra un usuario existente en la base de datos
+	 * Borra un usuario existente en la base de datos a apartir de su identificador.
 	 * 
 	 * @param id id asociado como clave primaria al usuario que se quiere borrar
 	 * @return ResponseEntity con mensaje indicando si ha ocurrido algún error 

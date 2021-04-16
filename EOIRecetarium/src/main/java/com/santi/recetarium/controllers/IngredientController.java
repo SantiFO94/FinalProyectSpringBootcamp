@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.santi.recetarium.models.entities.Ingredient;
-import com.santi.recetarium.models.entities.dto.IngredientDTOCard;
 import com.santi.recetarium.models.entities.dto.IngredientDTOListless;
 import com.santi.recetarium.models.entities.responses.ResponseIngredientDTOListless;
-import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOCard;
 import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOListless;
 import com.santi.recetarium.models.services.IIngredientServiceIMPL;
 
@@ -67,7 +65,6 @@ public class IngredientController {
 	}
 	
 	/**
-	 * 
 	 * Recupera nombres de los ingredientes para presentarlos en la version 
 	 * resumida de la receta.
 	 * 
@@ -92,17 +89,17 @@ public class IngredientController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		List<IngredientDTOCard> ingredientsCard = new ArrayList<IngredientDTOCard>();
-		ingredients.forEach(i-> ingredientsCard.add(new IngredientDTOCard(i)));
-		ResponseIngredientsDTOCard responseIngredient = new ResponseIngredientsDTOCard(ingredientsCard);
+		List<IngredientDTOListless> ingredientsCard = new ArrayList<IngredientDTOListless>();
+		ingredients.forEach(i-> ingredientsCard.add(new IngredientDTOListless(i)));
+		ResponseIngredientsDTOListless responseIngredient = new ResponseIngredientsDTOListless(ingredientsCard);
 		
-		return new ResponseEntity<ResponseIngredientsDTOCard>(responseIngredient, HttpStatus.OK);
+		return new ResponseEntity<ResponseIngredientsDTOListless>(responseIngredient, HttpStatus.OK);
 	}
 	
 	/**
 	 * Recupera un ingrediente a partir de su identificador.
 	 * 
-	 * @param id id asociado como clave primaria a la receta que se quiere recuperar
+	 * @param id id asociado como clave primaria al ingrediente que se quiere recuperar
 	 * @return Res ponseEntity con mensaje de error en caso de que ocurra algún problema
 	 * o con la respuesta conteniendo el ingrediente recuperado en caso de que todo vaya bien.
 	 */
@@ -132,9 +129,11 @@ public class IngredientController {
 	}
 	
 	/**
+	 * Agrega un ingrediente nuevo a la base de datos a partir de sus atributos sin id.
 	 * 
-	 * @param ingredient
-	 * @return
+	 * @param ingredient ingredient body del ingrediente que se quiere agregar.
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con el ingrediente actualizado en caso de que todo vaya bien.
 	 */
 	@PostMapping("/add")
 	public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient){
@@ -158,12 +157,14 @@ public class IngredientController {
 	}
 	
 	/**
-	 * @param ingredient
-	 * @param id
-	 * @return
+	 * Actualiza los datos de un ingrediente a partir de su identificador.
+	 * @param id id asociado como clave primaria al ingrediente que se quiere modificar
+	 * @param ingredient ingredient body con los nuevos datos.
+	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
+	 * o con el ingrediente actualizado en caso de que todo vaya bien.
 	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateIngredient(@RequestBody Ingredient ingredient, @PathVariable Integer id){
+	public ResponseEntity<?> updateIngredient(@PathVariable Integer id, @RequestBody Ingredient ingredient){
 
 		Ingredient ingredientOriginal = null;
 		Ingredient ingredientUpdated = null;
@@ -199,9 +200,10 @@ public class IngredientController {
 	}
 	
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Elimina un ingrediente a partir de su identificador.
+	 * @param id id asociado como clave primaria al ingrediente que se quiere eliminar
+	 * @return ResponseEntity con mensaje indicando si ha ocurrido algún error 
+	 * o se ha realizado el borrado correctamente.
 	 */
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteIngredient(@PathVariable Integer id){
