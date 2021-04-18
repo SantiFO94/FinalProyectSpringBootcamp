@@ -48,7 +48,7 @@ public class Recipe implements java.io.Serializable {
 	@Column(name = "image")
 	private String image;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "recipe_ingredient", joinColumns = {
 			@JoinColumn(name = "id_recipe", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "id_ingredient", nullable = false, updatable = false) })

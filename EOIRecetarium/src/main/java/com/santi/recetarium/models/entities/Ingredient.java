@@ -15,7 +15,6 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "ingredients", uniqueConstraints = @UniqueConstraint(columnNames = "ingredient_name"))
 public class Ingredient implements java.io.Serializable {
-
 	
 	private static final long serialVersionUID = 1L;
 	
