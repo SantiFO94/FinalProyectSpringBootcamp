@@ -9,6 +9,7 @@ public class RecipeDTOProfile {
 	private String description;
 	private int difficulty;
 	private String image;
+	private UserDTOPublic owner;
 	
 	public RecipeDTOProfile(Recipe recipe) {
 		this.idRecipe = recipe.getIdRecipe();
@@ -16,9 +17,9 @@ public class RecipeDTOProfile {
 		this.description = recipe.getDescription();
 		this.difficulty = recipe.getDifficulty();
 		this.image = recipe.getImage();
+		this.owner = new UserDTOPublic (recipe.getUser());
 	}
 
-	
 	public int getIdRecipe() {
 		return idRecipe;
 	}
@@ -38,6 +39,10 @@ public class RecipeDTOProfile {
 
 	public String getImage() {
 		return image;
+	}
+
+	public UserDTOPublic getOwner() {
+		return owner;
 	}
 
 }

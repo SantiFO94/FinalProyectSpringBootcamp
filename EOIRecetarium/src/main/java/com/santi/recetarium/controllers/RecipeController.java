@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class RecipeController {
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllRecipes(){
 		
+		//Long idCreator = ((Integer)authentication.getCredentials()).longValue();
 		List<Recipe> recipes = new ArrayList<Recipe>();
 		Map<String, Object> responseError = new HashMap();
 		
@@ -76,8 +78,9 @@ public class RecipeController {
 	 * o con la lista de recetas resumidas recuperadas en caso de que todo vaya bien.
 	 */
 	@GetMapping("/all/summaries")
-	public ResponseEntity<?> getRecipesSummary(){
-		
+	public ResponseEntity<?> getRecipesSummary(Authentication authentication){
+		Integer idCreator = ((Integer)authentication.getCredentials());
+
 		List<Recipe> recipes = new ArrayList<Recipe>();
 		Map<String, Object> responseError = new HashMap();
 		
@@ -89,9 +92,11 @@ public class RecipeController {
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if(recipes.size()==0) {
-			responseError.put("mensaje", "No existen ingredientes");
+			responseError.put("mensaje", "No existen recetas");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
+		
+		recipes.removeIf(r -> r.getUser().getIdUser() != idCreator);
 		
 		List<RecipeDTOProfile> recipeProfile = new ArrayList<RecipeDTOProfile>();
 		recipes.forEach(r-> recipeProfile.add(new RecipeDTOProfile(r)));
@@ -103,6 +108,7 @@ public class RecipeController {
 	/**
 	 * 
 	 * Recupera una receta a partir de su identificador, mostrando todos sus atributos.
+	 * Usado a partir de la lsita de recetas pertenecientes al usuario.
 	 * 
 	 * @param id id asociado como clave primaria a la receta que se quiere recuperar
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
@@ -142,8 +148,9 @@ public class RecipeController {
 	 * o con la receta agregada completa en caso de que todo vaya bien.
 	 */
 	@PostMapping("/add")
-	public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe){
-		
+	public ResponseEntity<?> addRecipe(Authentication authentication, @RequestBody Recipe recipe){
+		Integer idCreator = ((Integer)authentication.getCredentials());
+
 		Recipe newRecipe = null;
 		Map<String, Object> responseError = new HashMap();
 		

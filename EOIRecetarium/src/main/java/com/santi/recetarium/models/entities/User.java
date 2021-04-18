@@ -23,11 +23,11 @@ public class User implements java.io.Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id_user", unique = true, nullable = false)
 	private int idUser;
-	@Column(name = "nickname", unique = true, nullable = false)
+	@Column(name = "nickname", unique = true, nullable = false, length = 100)
 	private String nickname;
-	@Column(name = "password", nullable = false)
+	@Column(name = "password", nullable = false, length = 100)
 	private String password;
-	@Column(name = "email")
+	@Column(name = "email", length = 100)
 	private String email;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Recipe> recipes = new HashSet<Recipe>(0);

@@ -1,8 +1,5 @@
 package com.santi.recetarium.models.entities.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.santi.recetarium.models.entities.User;
 
 public class UserDTOPublic implements java.io.Serializable {
@@ -12,14 +9,14 @@ public class UserDTOPublic implements java.io.Serializable {
 	private int idUser;
 	private String nickname;
 	private String email;
-	private Set<RecipeDTOIngredientListless> recipes = new HashSet<RecipeDTOIngredientListless>(0);
+//	private Set<RecipeDTOIngredientListless> recipes = new HashSet<RecipeDTOIngredientListless>(0);
 	
 	public UserDTOPublic(User user) {
 		this.idUser = user.getIdUser();
 		this.nickname = user.getNickname();
 		this.email = user.getEmail();
-		user.getRecipes().forEach(r->this.recipes
-				.add(new RecipeDTOIngredientListless(r)));
+//		user.getRecipes().forEach(r->this.recipes
+//				.add(new RecipeDTOIngredientListless(r)));
 	}
 
 	public int getIdUser() {
@@ -34,8 +31,8 @@ public class UserDTOPublic implements java.io.Serializable {
 		return email;
 	}
 
-	public Set<RecipeDTOIngredientListless> getRecipes() {
-		return recipes;
-	}
+//	public Set<RecipeDTOIngredientListless> getRecipes() {
+//		return recipes;
+//	}
 
 }

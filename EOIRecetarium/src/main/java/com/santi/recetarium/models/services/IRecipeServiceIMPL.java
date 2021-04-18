@@ -13,6 +13,8 @@ public class IRecipeServiceIMPL implements IRecipeService {
 
 	@Autowired
 	private IRecipeDAO recipeDAO;
+	@Autowired
+	private IUserServiceIMPL userService;
 	
 	@Override
 	public List<Recipe> findAll() {
@@ -25,13 +27,13 @@ public class IRecipeServiceIMPL implements IRecipeService {
 	}
 
 	@Override
-	public Recipe save(Recipe ingredient) {
-		return recipeDAO.save(ingredient);
+	public Recipe save(Recipe recipe) {
+		return recipeDAO.save(recipe);
 	}
 
 	@Override
-	public void delete(Recipe ingredient) {
-		recipeDAO.delete(ingredient);
+	public void delete(Recipe recipe) {
+		recipeDAO.delete(recipe);
 	}
 
 	@Override
@@ -39,4 +41,8 @@ public class IRecipeServiceIMPL implements IRecipeService {
 		recipeDAO.deleteById(id);
 	}
 
+	public Recipe insert(Recipe recipe, Integer idOwner) {
+		
+		return recipeDAO.save(recipe);
+	}
 }

@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -136,7 +139,7 @@ public class IngredientController {
 	 * o con el ingrediente actualizado en caso de que todo vaya bien.
 	 */
 	@PostMapping("/add")
-	public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient){
+	public ResponseEntity<?> addIngredient(@Valid @RequestBody Ingredient ingredient, BindingResult result){
 		
 		Ingredient newIngredient = null;
 		Map<String, Object> responseError = new HashMap();
@@ -169,7 +172,7 @@ public class IngredientController {
 	 * o con el ingrediente actualizado en caso de que todo vaya bien.
 	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateIngredient(@PathVariable Integer id, @RequestBody Ingredient ingredient){
+	public ResponseEntity<?> updateIngredient(@Valid @PathVariable Integer id, @RequestBody Ingredient ingredient, BindingResult result){
 
 		Ingredient ingredientOriginal = null;
 		Ingredient ingredientUpdated = null;
@@ -205,7 +208,8 @@ public class IngredientController {
 	}
 	
 	/**
-	 * Elimina un ingrediente a partir de su identificador.
+	 * Elimina un ingrediente a partir de su identificador. Sólo para usar por el 
+	 * sistema o admin cuando un ingrediente no tenga recetas asociadas.
 	 * @param id id asociado como clave primaria al ingrediente que se quiere eliminar
 	 * @return ResponseEntity con mensaje indicando si ha ocurrido algún error 
 	 * o se ha realizado el borrado correctamente.

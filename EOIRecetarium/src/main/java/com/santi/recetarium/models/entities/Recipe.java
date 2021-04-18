@@ -30,13 +30,13 @@ public class Recipe implements java.io.Serializable {
 	@JoinColumn(name = "id_user")
 	private User user;
 	
-	@Column(name = "recipe_name", unique = true, nullable = false)
+	@Column(name = "recipe_name", unique = true, nullable = false, length = 100)
 	private String recipeName;
 	
 	@Column(name = "difficulty")
 	private int difficulty;
 	
-	@Column(name = "time_required")
+	@Column(name = "time_required", length = 100)
 	private String timeRequired;
 	
 	@Column(name = "description")
@@ -76,8 +76,9 @@ public class Recipe implements java.io.Serializable {
 	}
 	
 	public Recipe(int idRecipe, String name, int difficulty, String timeRequired, String description,
-			String instructions, String image, Set<Ingredient> ingredients) {
+			String instructions, User user, String image, Set<Ingredient> ingredients) {
 		this.idRecipe = idRecipe;
+		this.user = user;
 		this.recipeName = name;
 		this.difficulty = difficulty;
 		this.timeRequired = timeRequired;

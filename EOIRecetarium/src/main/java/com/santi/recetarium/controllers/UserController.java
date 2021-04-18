@@ -70,7 +70,7 @@ public class UserController {
 	
 	/**
 	 * 
-	 * Recupera perfil público sin contraseña de los usuarios para mostrar sus datos de manera segura.
+	 * Recupera perfiles públicos sin contraseña de los usuarios para mostrar sus datos de manera segura.
 	 * Contiene solo id, nickname, email y recetas.
 	 * 
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
@@ -136,40 +136,39 @@ public class UserController {
 		return new ResponseEntity<ResponseUserDTOIngredientListless>(responseUser, HttpStatus.OK);
 	}
 	
-//add no funciona creando nuevas recetas a la vez que el usuario en postman
 	/**
-	 * 
 	 * Agrega un usuario nuevo a la base de datos a partir de sus atributos sin id.
 	 * 
 	 * @param user user body del usuario que se quiere agregar
 	 * @return ResponseEntity con mensaje de error en caso de que ocurra algún problema
 	 * o con el usuario agregado en caso de que todo vaya bien.
 	 */
-	@PostMapping("/add")
-	public ResponseEntity<?> addUser(@RequestBody User user){
-		
-		User newUser = null;
-		Map<String, Object> responseError = new HashMap();
-		
-		if(null== user) {
-			responseError.put("mensaje", "No se ha recibido la información.");
-			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_ACCEPTABLE);
-		}
-		
-		try {
-			newUser = userService.save(user);
-		}catch(DataAccessException e) {
-			responseError.put("mensaje", "Error al intentar insertar en la base de datos");
-			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		ResponseUserDTOPublic responseUser = 
-				new ResponseUserDTOPublic(
-						new UserDTOPublic(newUser));
-		
-		return new ResponseEntity<ResponseUserDTOPublic>(responseUser,HttpStatus.CREATED);
-	}
+//	@PostMapping("/add")
+//	public ResponseEntity<?> addUser(@RequestBody User user){
+//		
+//		User newUser = null;
+//		Map<String, Object> responseError = new HashMap();
+//		
+//		if(null== user) {
+//			responseError.put("mensaje", "No se ha recibido la información.");
+//			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_ACCEPTABLE);
+//		}
+//		
+//		try {
+//			newUser = userService.save(user);
+//		}catch(DataAccessException e) {
+//			responseError.put("mensaje", "Error al intentar insertar en la base de datos");
+//			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
+//			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		
+//		ResponseUserDTOPublic responseUser = 
+//				new ResponseUserDTOPublic(
+//						new UserDTOPublic(newUser));
+//		
+//		return new ResponseEntity<ResponseUserDTOPublic>(responseUser,HttpStatus.CREATED);
+//	}
+	
 //revisar o implementar para poder cambiar la contraseña y que salga un mensaje sin mostrarla
 //No funciona. HttpMediaTypeNotSupportedException: "Content type 'text/plain;charset=UTF-8' not supported"
 	/**
