@@ -58,7 +58,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 		return Jwts.parser().setSigningKey(SecurityConstants.SECRET_KEY).parseClaimsJws(jwtToken).getBody();
 	}
 
-	//revisar nickname o userId
 	/**
 	 * Metodo para autenticarnos dentro del flujo de Spring
 	 * 

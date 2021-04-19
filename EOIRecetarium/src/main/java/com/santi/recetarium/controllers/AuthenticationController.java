@@ -89,8 +89,6 @@ public class AuthenticationController {
 		Map<String, Object> data = new HashMap<String, Object>();
 		
 		data.put("userId", user.getIdUser());
-//		data.put("nickname", user.getNickname());
-//		data.put("email", user.getEmail());
 		data.put("authorities", Arrays.asList("ROLE_USER"));
 		
 		String token = Jwts.builder().setId("recetarium")

@@ -9,14 +9,12 @@ public class UserDTOPublic implements java.io.Serializable {
 	private int idUser;
 	private String nickname;
 	private String email;
-//	private Set<RecipeDTOIngredientListless> recipes = new HashSet<RecipeDTOIngredientListless>(0);
 	
 	public UserDTOPublic(User user) {
 		this.idUser = user.getIdUser();
 		this.nickname = user.getNickname();
 		this.email = user.getEmail();
-//		user.getRecipes().forEach(r->this.recipes
-//				.add(new RecipeDTOIngredientListless(r)));
+
 	}
 
 	public int getIdUser() {
@@ -30,9 +28,5 @@ public class UserDTOPublic implements java.io.Serializable {
 	public String getEmail() {
 		return email;
 	}
-
-//	public Set<RecipeDTOIngredientListless> getRecipes() {
-//		return recipes;
-//	}
 
 }
