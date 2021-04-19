@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.santi.recetarium.models.dao.IRecipeDAO;
 import com.santi.recetarium.models.entities.Recipe;
+import com.santi.recetarium.models.entities.dto.RecipeDTOIngredientListless;
 
 @Service
 public class IRecipeServiceIMPL implements IRecipeService {
@@ -15,6 +16,8 @@ public class IRecipeServiceIMPL implements IRecipeService {
 	private IRecipeDAO recipeDAO;
 	@Autowired
 	private IUserServiceIMPL userService;
+	@Autowired
+	private IIngredientServiceIMPL ingredientService;
 	
 	@Override
 	public List<Recipe> findAll() {
@@ -41,8 +44,19 @@ public class IRecipeServiceIMPL implements IRecipeService {
 		recipeDAO.deleteById(id);
 	}
 
-	public Recipe insert(Recipe recipe, Integer idOwner) {
-		
-		return recipeDAO.save(recipe);
+	public Recipe insert(RecipeDTOIngredientListless recipeDto, Integer idOwner) {
+		Recipe recipe = new Recipe();
+		recipe.setRecipeName(recipeDto.getRecipeName());
+		recipe.setDifficulty(recipeDto.getDifficulty());
+		recipe.setTimeRequired(recipeDto.getTimeRequired());
+		recipe.setDescription(recipeDto.getDescription());
+		recipe.setInstructions(recipeDto.getInstructions());
+		recipe.setImage(recipeDto.getImage());
+		recipeDto.getIngredients().forEach(i-> 
+			recipe.getIngredients()
+			.add(ingredientService.findById(i.getIdIngredient())) );
+		recipe.setUser(userService.findById(idOwner));
+		//return recipeDAO.save(recipe);
+		return recipe;
 	}
 }

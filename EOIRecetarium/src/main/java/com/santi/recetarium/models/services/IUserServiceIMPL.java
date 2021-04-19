@@ -45,8 +45,9 @@ public class IUserServiceIMPL implements IUserService {
 		userDao.deleteById(id);
 	}
 	
-	public User login(String email, String password) throws NoSuchAlgorithmException {
-		return this.userDao.login(email, securityUtils.encodePassword(password));
+	@Override
+	public User login(String nickname, String password) throws NoSuchAlgorithmException {
+		return this.userDao.login(nickname, securityUtils.encodePassword(password));
 	}
 	
 	public User register(UserDTORegister userRegister) throws NoSuchAlgorithmException {
@@ -56,7 +57,7 @@ public class IUserServiceIMPL implements IUserService {
 		user.setPassword(securityUtils.encodePassword(userRegister.getPassword()));
 		user.setEmail(userRegister.getEmail());
 		
-		return user;
+		return this.save(user);
 	}
 
 }

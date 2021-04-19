@@ -26,7 +26,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 	private final String HEADER = "Authorization";
 	private final String PREFIX = "Bearer ";
 	
-	
 	/**
 	 * Instrucciones de validación de usuario en nuestra api.
 	 */
@@ -59,6 +58,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 		return Jwts.parser().setSigningKey(SecurityConstants.SECRET_KEY).parseClaimsJws(jwtToken).getBody();
 	}
 
+	//revisar nickname o userId
 	/**
 	 * Metodo para autenticarnos dentro del flujo de Spring
 	 * 
@@ -67,7 +67,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 	private void setUpSpringAuthentication(Claims claims) {
 		@SuppressWarnings("unchecked")
 		List<String> authorities = (List<String>)claims.get("authorities");
-		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), claims.get("id"),
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), claims.get("userId"),
 				authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 		SecurityContextHolder.getContext().setAuthentication(auth);
 

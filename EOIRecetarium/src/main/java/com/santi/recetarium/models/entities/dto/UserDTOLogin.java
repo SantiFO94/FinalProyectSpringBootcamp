@@ -11,10 +11,6 @@ public class UserDTOLogin  implements Serializable {
 	private String nickname;
 	private String password;
 	
-	public UserDTOLogin(User user) {
-		this.nickname = user.getNickname();
-		this.password = user.getPassword();
-	}
 	
 	public String getNickname() {
 		return nickname;

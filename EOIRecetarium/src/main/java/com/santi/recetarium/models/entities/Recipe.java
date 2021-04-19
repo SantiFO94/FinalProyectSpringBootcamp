@@ -26,7 +26,7 @@ public class Recipe implements java.io.Serializable {
 	@Column(name = "id_recipe", unique = true, nullable = false)
 	private int idRecipe;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_user")
 	private User user;
 	

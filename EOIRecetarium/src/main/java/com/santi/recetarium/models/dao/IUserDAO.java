@@ -9,6 +9,7 @@ import com.santi.recetarium.models.entities.User;
 @Repository
 public interface IUserDAO extends CrudRepository<User, Integer> {
 
+	
 	@Query("select u from User u where nickname = ?1 and password = ?2")
 	public User login(String nickname, String password);
 }

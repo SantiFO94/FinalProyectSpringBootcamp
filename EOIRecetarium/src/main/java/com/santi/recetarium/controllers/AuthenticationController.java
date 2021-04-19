@@ -88,15 +88,15 @@ public class AuthenticationController {
 	private String getToken(User user) {	
 		Map<String, Object> data = new HashMap<String, Object>();
 		
-		data.put("id", user.getIdUser());
-		data.put("email", user.getEmail());
+		data.put("userId", user.getIdUser());
+//		data.put("nickname", user.getNickname());
+//		data.put("email", user.getEmail());
 		data.put("authorities", Arrays.asList("ROLE_USER"));
 		
-		String token = Jwts.builder().setId("springEventos")
+		String token = Jwts.builder().setId("recetarium")
 				.setSubject(user.getNickname()).addClaims(data)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 6000000))
-				//Algoritmo HS512 el más seguro en cunato a cifrado simétrico
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET_KEY).compact();
 		
 		return token;

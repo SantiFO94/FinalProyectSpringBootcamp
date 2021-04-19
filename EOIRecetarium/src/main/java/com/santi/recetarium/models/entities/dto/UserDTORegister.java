@@ -12,11 +12,6 @@ public class UserDTORegister  implements Serializable {
 	private String password;
 	private String email;
 	
-	public UserDTORegister(User user) {
-		this.nickname = user.getNickname();
-		this.password = user.getPassword();
-		this.email= user.getEmail();
-	}
 	
 	public String getNickname() {
 		return nickname;
@@ -27,7 +22,7 @@ public class UserDTORegister  implements Serializable {
 	}
 	
 	public String getEmail() {
-		return null;
+		return email;
 	}
 	
 	

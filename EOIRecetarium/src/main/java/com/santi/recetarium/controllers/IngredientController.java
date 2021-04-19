@@ -28,7 +28,7 @@ import com.santi.recetarium.models.entities.responses.ResponseIngredientDTOListl
 import com.santi.recetarium.models.entities.responses.ResponseIngredientsDTOListless;
 import com.santi.recetarium.models.services.IIngredientServiceIMPL;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/ingredients")
 public class IngredientController {

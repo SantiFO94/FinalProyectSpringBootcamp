@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,7 +31,7 @@ import com.santi.recetarium.models.entities.responses.ResponseRecipesDTOProfile;
 import com.santi.recetarium.models.services.IRecipeServiceIMPL;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
@@ -46,7 +48,6 @@ public class RecipeController {
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllRecipes(){
 		
-		//Long idCreator = ((Integer)authentication.getCredentials()).longValue();
 		List<Recipe> recipes = new ArrayList<Recipe>();
 		Map<String, Object> responseError = new HashMap();
 		
@@ -68,7 +69,7 @@ public class RecipeController {
 		
 		return new ResponseEntity<ResponseRecipesDTOIngredientListless>(responseRecipe, HttpStatus.OK);
 	}
-	
+	//null pointer exception at lambda of filter con el .stream().filter()
 	/**
 	 * 
 	 * Recupera resumen de las recetas para presentarlas en el perfil de usuario.
@@ -91,15 +92,16 @@ public class RecipeController {
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(recipes.size()==0) {
+		if(null == recipes) {
 			responseError.put("mensaje", "No existen recetas");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
 		}
 		
-		recipes.removeIf(r -> r.getUser().getIdUser() != idCreator);
-		
 		List<RecipeDTOProfile> recipeProfile = new ArrayList<RecipeDTOProfile>();
 		recipes.forEach(r-> recipeProfile.add(new RecipeDTOProfile(r)));
+//		recipes.stream().filter(r -> 
+//		r.getUser().getIdUser() == idCreator)
+//		.forEach(r-> recipeProfile.add(new RecipeDTOProfile(r)));
 		ResponseRecipesDTOProfile responseRecipe = new ResponseRecipesDTOProfile(recipeProfile);
 		
 		return new ResponseEntity<ResponseRecipesDTOProfile>(responseRecipe, HttpStatus.OK);
@@ -140,7 +142,6 @@ public class RecipeController {
 	}
 	
 	/**
-	 * 
 	 * Agrega una receta nueva a la base de datos a partir de sus atributos sin id.
 	 * 
 	 * @param recipe recipe body del elemento receta que se quiere agregar
@@ -149,7 +150,7 @@ public class RecipeController {
 	 */
 	@PostMapping("/add")
 	public ResponseEntity<?> addRecipe(Authentication authentication, @RequestBody Recipe recipe){
-		Integer idCreator = ((Integer)authentication.getCredentials());
+		Integer idOwner = ((Integer)authentication.getCredentials());
 
 		Recipe newRecipe = null;
 		Map<String, Object> responseError = new HashMap();
@@ -160,7 +161,7 @@ public class RecipeController {
 		}
 		
 		try {
-			newRecipe = recipeService.save(recipe);
+			newRecipe = recipeService.save(recipeService.insert(new RecipeDTOIngredientListless(recipe), idOwner));
 		}catch(DataAccessException e) {
 			responseError.put("mensaje", "Error al intentar insertar en la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
@@ -173,7 +174,7 @@ public class RecipeController {
 		
 		return new ResponseEntity<ResponseRecipeDTOIngredientListless>(responseRecipe,HttpStatus.CREATED);
 	}
-	
+	//añade una receta nueva con los cambios sin sustituir a la antigua
 	/**
 	 * 
 	 * Actualiza una receta existente en la base de datos.
@@ -185,7 +186,8 @@ public class RecipeController {
 	 * o con la receta actualizada completa en caso de que todo vaya bien.
 	 */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateRecipe(@PathVariable Integer id, @RequestBody Recipe recipe){
+	public ResponseEntity<?> updateRecipe(Authentication authentication, @PathVariable Integer id, @RequestBody Recipe recipe){
+		Integer idOwner = ((Integer)authentication.getCredentials());
 
 		Recipe recipeOriginal = null;
 		Recipe recipeUpdated = null;
@@ -202,11 +204,13 @@ public class RecipeController {
 		if(recipeOriginal==null) {
 			responseError.put("mensaje", "El identificador buscado no existe");
 			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.NOT_FOUND);
+		} else if(recipeOriginal.getUser().getIdUser() != idOwner) {
+			responseError.put("mensaje", "La receta no pertenece a este usuario");
+			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.UNAUTHORIZED);
 		}
-		
 		try {
 			recipeOriginal = new Recipe(id, recipe);
-			recipeUpdated = recipeService.save(recipeOriginal);
+			recipeUpdated = recipeService.save(recipe);
 		}catch (DataAccessException e) { 
 			responseError.put("mensaje", "Error al actualizar la receta en la base de datos");
 			responseError.put("error", e.getMessage().concat(" ").concat(e.getMostSpecificCause().getMessage()));
@@ -229,9 +233,15 @@ public class RecipeController {
 	 * o se ha realizado el borrado correctamente.
 	 */
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteRecipe(@PathVariable Integer id){
+	public ResponseEntity<?> deleteRecipe(Authentication authentication, @PathVariable Integer id){
+		Integer idOwner = ((Integer)authentication.getCredentials());
 		
 		Map<String, Object> responseError = new HashMap();
+		
+		if(recipeService.findById(id).getUser().getIdUser() != idOwner) {
+			responseError.put("mensaje", "La receta no pertenece a este usuario");
+			return new ResponseEntity<Map<String, Object>>(responseError, HttpStatus.UNAUTHORIZED);
+		}
 		
 		try {
 			recipeService.deleteById(id);
