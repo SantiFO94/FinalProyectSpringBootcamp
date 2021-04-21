@@ -12,14 +12,14 @@ public class UserDTOIngredientListless implements Serializable {
 
 	private int idUser;
 	private String nickname;
-	private String password;
+//	private String password;
 	private String email;
 	private Set<RecipeDTOIngredientListless> recipes = new HashSet<RecipeDTOIngredientListless>(0);
 	
 	public UserDTOIngredientListless(User user) {
 		this.idUser = user.getIdUser();
 		this.nickname = user.getNickname();
-		this.password = user.getPassword();
+//		this.password = user.getPassword();
 		this.email = user.getEmail();
 		user.getRecipes().forEach(r->this.recipes
 				.add(new RecipeDTOIngredientListless(r)));
@@ -33,9 +33,9 @@ public class UserDTOIngredientListless implements Serializable {
 		return nickname;
 	}
 
-	public String getPassword() {
-		return password;
-	}
+//	public String getPassword() {
+//		return password;
+//	}
 
 	public String getEmail() {
 		return email;

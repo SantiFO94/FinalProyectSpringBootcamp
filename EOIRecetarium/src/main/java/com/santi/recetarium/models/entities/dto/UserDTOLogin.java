@@ -2,8 +2,6 @@ package com.santi.recetarium.models.entities.dto;
 
 import java.io.Serializable;
 
-import com.santi.recetarium.models.entities.User;
-
 public class UserDTOLogin  implements Serializable {
 
 	private static final long serialVersionUID = 1L;

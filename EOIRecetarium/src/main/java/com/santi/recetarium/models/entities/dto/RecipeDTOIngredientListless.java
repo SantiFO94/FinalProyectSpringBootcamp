@@ -7,6 +7,7 @@ import com.santi.recetarium.models.entities.Recipe;
 
 public class RecipeDTOIngredientListless {
 
+	private int idRecipe;
 	private String recipeName;
 	private int difficulty;
 	private String timeRequired;
@@ -16,6 +17,7 @@ public class RecipeDTOIngredientListless {
 	private Set<IngredientDTOListless> ingredients = new HashSet<IngredientDTOListless>(0);
 	
 	public RecipeDTOIngredientListless(Recipe recipe) {
+		this.idRecipe = recipe.getIdRecipe();
 		this.recipeName= recipe.getRecipeName();
 		this.difficulty = recipe.getDifficulty();
 		this.timeRequired = recipe.getTimeRequired();
@@ -27,6 +29,10 @@ public class RecipeDTOIngredientListless {
 
 	}
 
+	public int getIdRecipe() {
+		return idRecipe;
+	}
+	
 	public String getRecipeName() {
 		return recipeName;
 	}
